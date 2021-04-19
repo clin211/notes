@@ -26,7 +26,7 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          BRANCH: main
+          BRANCH: gh-pages
           FOLDER: ./src/.vitepress/dist
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           REPOSITORY_NAME: changlin93/chagnlin93.github.io
