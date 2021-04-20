@@ -9,35 +9,37 @@ module.exports = {
                 text: '前端',
                 items: [
                     { text: 'javascript', link: '/front-end/js/' },
-                    { text: 'vue', link: '/front-end/vue' },
-                    { text: 'react', link: '/front-end/react' },
-                    { text: '微信小程序', link: '/front-end/wechat' }
+                    { text: 'vue', link: '/front-end/vue/' },
+                    { text: 'react', link: '/front-end/react/' },
+                    { text: '微信小程序', link: '/front-end/wechat/' }
                 ]
             },
             {
                 text: '数据库',
                 items: [
-                    { text: 'mongoDB', link: '/database/mongoDB' },
-                    { text: 'redis', link: '/database/mongoDB' },
-                    { text: 'mysql', link: '/database/mongoDB' }
+                    { text: 'mongoDB', link: '/database/mongoDB/' },
+                    { text: 'redis', link: '/database/redis/' },
+                    { text: 'mysql', link: '/database/mysql/' }
                 ]
             },
-            { text: '项目', link: '/project' },
-            { text: 'Go', link: '/go' }
+            { text: '项目', link: '/project/' },
+            { text: 'Go', link: '/go/' },
+            { text: '面试', link: '/interview/' }
         ],
         sidebar: {
-            '/project/': [
-                { text: '简介', link: '/' },
-                { text: '快速上手', link: '/quick-start' },
-                { text: '常见问题', link: '/faq' },
-                { text: 'API 文档', link: '/api' },
-                { text: '相关文档', link: '/link' }
-            ],
-            '/note/': [],
             '/front-end/js/': [
                 { text: 'html中的JavaScript', link: '/front-end/js/' },
                 { text: '语言基础', link: '/front-end/js/base' }
-            ]
+            ],
+            '/front-end/vue/': [{ text: '', link: '/front-end/vue/' }],
+            '/front-end/react/': [{ text: '', link: '/front-end/react/' }],
+            '/front-end/wechat/': [{ text: '', link: '/front-end/wechat/' }],
+            '/project/': [{ text: '', link: '/' }],
+            '/database/mongodb/': [{ text: '', link: '/' }],
+            '/database/redis/': [{ text: '', link: '/' }],
+            '/database/mysql/': [{ text: '', link: '/' }],
+            '/go/': [{ text: '', link: '/go/' }],
+            '/interview/': [{ text: '面试', link: '/interview/' }]
         },
         lastUpdated: '更新时间',
         // 假定是 GitHub. 同时也可以是一个完整的 GitLab URL
