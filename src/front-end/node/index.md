@@ -44,7 +44,9 @@ app.listen(3003)
 <!-- ![img](./1.png) -->
 <img src="./assets/1.png" style="display: block; box-shadow: 2px 1px 1px #d0c6c629;" />
 
+::: warning
 上面代码虽然轻松实现了一个 web 服务器，但是返回的数据和所请求都是固定的；并不适应真实的业务场景，比如：获取请求接口时的参数、方法、修改一次代码就要在终端中重新运行启动命令等；
+:::
 
 由于使用的`node app.js`启动，所以每次更改都要重新启动，这样给我们开发带来了极大的不便利，所以我们可以使用一些第三方依赖来自动监听文件的变化并重新启动，开发环境可以使用`nodemon` 首先安装`npm i nodemon -D`，也可以全局安装此依赖，生产环境的话可以使用`pm2`
 安装之后在`package.json`的`scripts`中添加启动方式；如下
@@ -204,22 +206,22 @@ this is a middleware 2 end
 this is a middleware 1 end
 ```
 
-## koa 中获取数据的几种方式
+## koa 构建 restful 接口及获取参数
 
--   在 params 中取值，eg：http://localhost/user/:id
+-   在 params 中取值，`eg：http://localhost:3003/api/v1/user/1`
 
 ```javascript
-//请求时若为：http://localhost/user/1
+//请求时若为：http://localhost:3003/api/v1/user
 router.post('/user/:id',async ctx => {
     //获取url的id
   cosnt { id } = ctx.params;//{id: 1}
 })
 ```
 
--   在 query 中取值，也就是获取问号后面的。如：http://localhost/user?name=Forest&age=18
+-   在 query 中取值，也就是获取问号后面的。
 
 ```javascript
-await axios.post('http://localhost/user?name=Forest&age=18')
+await axios.post('http://localhost:3003/api/v1/user?name=Forest&age=18')
 router.post('/user', async ctx => {
     //获取url的id
     const { name, age } = ctx.request.query //{name: Forest, age: 18}
@@ -232,7 +234,7 @@ router.post('/user', async ctx => {
 //请求接口时设置请求头
 axios
     .post(
-        'http://http://localhost/user?name=Forest&age=18',
+        'http://localhost/user?name=Forest&age=18',
         {
             headers: {
                 Author: 'token'
@@ -267,3 +269,70 @@ axios.post('http://localhost/user', {name: 'Foreset', age: 18}).then(res => {
     console.log('res:', res)
 });
 ```
+
+restful 接口完整代码：
+
+```javascript
+const Koa = require('koa')
+const Router = require('@koa/router')
+const koaBody = require('koa-body')
+const app = new Koa()
+const router = new Router({ prefix: '/api/v1' })
+
+router.get('/', async ctx => {
+    ctx.body = {
+        status: 200,
+        message: 'hi @koa/router'
+    }
+})
+
+router.get('/user', async ctx => {
+    // const { name, age } = ctx.query
+    ctx.body = {
+        status: 200,
+        message: 'success',
+        data: {
+            query: ctx.query,
+            nickname: 'Forest',
+            age: 18,
+            jobs: '前端攻城狮',
+            skills: '搬砖'
+        }
+    }
+})
+
+router.get('/user/:id', async ctx => {
+    const { id } = ctx.params
+    console.log('id:', id)
+    ctx.body = {
+        status: 200,
+        message: 'success',
+        data: {
+            id,
+            nickname: 'Forest',
+            age: 18,
+            jobs: '前端攻城狮',
+            skills: '搬砖'
+        }
+    }
+})
+
+router.post('/user', async ctx => {
+    const { name, age } = ctx.request.body
+    ctx.body = {
+        status: 200,
+        data: {
+            name,
+            age
+        }
+    }
+})
+
+app.use(koaBody()).use(router.routes()).use(router.allowedMethods)
+
+app.listen(3003)
+```
+
+::: tip
+注意 koa-body 中间件的引入顺序必须在 router 之前，否则获取不了 post 请求携带的
+:::
