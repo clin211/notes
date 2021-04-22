@@ -205,3 +205,78 @@ const TableDeail = ({ columns }: TableData) => {
 > -   广播通信顾名思义是类似广播一样给多个人进行广播消息。
 > -   点对点通信顾名思义就是一对一的通信，例如多人实时聊天，可以指定用户来发送消息。点对点通信中需要注意服务端需要记录每个 socket 客户端的连接 ，需要将客户端及服务端 socket 对象关联起来。广播数据的时候，广播指定对象就可以了
 > -   WebSocket 区分广播通信及点对点通信核心在于区分每一个连接的 socket 对象。广播通信需要对于非自身的所有连接的 socket 对象进行通信。而点对点通信，通过关联用户及 socket 对象，且保存每一个 socket 连接，查找指定的 socket 对象，来达到发送指定 socket 连接的目的。
+
+## 客户端缓存有几种方式?浏览器出现 from disk、from memory 的 策略是啥?
+
+1.强缓存
+
+-   服务器通知浏览器一个缓存时间，在缓存时间内，下次请求，直接用缓存，不在时间内，执行比较缓存策略。
+-   `Cache-control` （相对值）、 `Expries`（绝对值）
+-   Expries 是 http1.0 的标准
+
+```javascript
+let nowTime = new Date()
+nowTime.setTime(new Date().getTime() + 3600 * 1000)
+ctx.set('Expires', nowTime.toUTCString())
+```
+
+到了`HTTP/1.1`，`Expire`已经被`Cache-Control`替代`ctx.set("Cache-control","max-age=3600") // 设置缓存时间 3600s`
+
+-   public：所有内容都将被缓存（客户端和代理服务器都可缓存） - private：所有内容只有客户端可以缓存，`Cache-Control`的默认取值 - no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定 - no-store：所有内容都不会被缓存，即不使用强制缓存，也不使用协商缓存 - max-age=xxx ：缓存内容将在 xxx 秒后失效`Cache-Control`优先级比`Expires`高`from memory cache`代表使用内存中的缓存，`from disk cache`则代表使用的是硬盘中的缓存，浏览器读取缓存的顺序为`memory –> disk`。
+
+-   协商缓存让客户端与服务器之间能实现缓存文件是否更新的验证、提升缓存的复用率，将缓存信息中的`Etag`和`Last-Modified`通过请求发送给服务器，由服务器校验，返回 304 状态码时，浏览器直接使用缓存。出现` from disk`、`from memory` 的策略是强缓存。
+    -   `Last-Modify/if-Modify-Since
+    -   ETag/if-None-Macth`
+    -   协商缓存的标识也是在响应报文的 HTTP 头中和请求结果一起返回给浏览器的，控制协商缓存的字段分别有：`Last-Modified / If-Modified-Since`和`Etag / If-None-Match`，其中`Etag / If-None-Match`的优先级比`Last-Modified / If-Modified-Since`高。
+    -   缓存关系强缓存优于协商缓存，强缓存中 `Cache-control` 优于 `Expries`，协商缓存中`ETag/ If-None-Match` 优先级高于 `Last-Modified / If-Modified-Since`。
+
+## 说一下 CORS 的简单请求和复杂请求的区别?
+
+-   `CORS(Cross-origin resource sharing)`，跨域资源共享，是一份浏览器技术的规范，用来避开浏览器的同源策略。相关头部设置如下：
+    -   `Access-Control-Allow-Origin` 指示请求的资源能共享给哪些域。 `Access-Control-Allow-Credentials` 指示当请求的凭证标记为 `true` 时，是否响应该请求。 `Access-Control-Allow-Headers` 用在对预请求的响应中，指示实际的请求中可以使用哪些 `HTTP` 头。 `Access-Control-Allow-Methods` 指定对预请求的响应中，哪些 `HTTP` 方法允许访问请求的资源。 `Access-Control-Expose-Headers` 指示哪些 `HTTP` 头的名称能在响应中列出。 `Access-Control-Max-Age` 指示预请求的结果能被缓存多久。 `Access-Control-Request-Headers` 用于发起一个预请求，告知服务器正式请求会使用那些 `HTTP` 头。 `Access-Control-Request-Method` 用于发起一个预请求，告知服务器正式请求会使用哪一种 `HTTP` 请求方法。 `Origin` 指示获取资源的请求是从什么域发起的。
+    -   `CORS`可以分成两种简单请求和复杂请求。简单请求是满足以下下条件的请求
+    -   HTTP 方法是下列之一
+        -   HEAD
+        -   GET
+        -   POST
+    -   HTTP 头信息不超出以下几种字段
+        -   Accept
+        -   Accept-Language
+        -   Content-Language
+        -   Last-Event-ID
+        -   Content-Type，但仅能是下列之一
+        -   application/x-www-form-urlencoded
+        -   multipart/form-datatext/plain`
+    -   反之就是复杂请求，复杂请求表面上看起来和简单请求使用上差不多，但实际上浏览器发送了不止一个请求。其中最先发送的是一种"预请求"，此时作为服务端，也需要返回"预回应"作为响应。预请求实际上是对服务端的一种权限请求，只有当预请求成功返回，实际请求才开始执行。
+
+## 节流和防抖分别是什么？在什么场景下使用？请分别实现一个节流函数和一个防抖函数
+
+## 怎么禁止让 js 读取 cookie？怎么让 cookie 只在 HTTPS 下传输？
+
+> 由于 cookie 会存放在客户端，一般情况下会保存一些凭证及状态信息，为了防止 cookie 泄露造成安全问题。可以这只 cookie 的 HttpOnly 属性，那么通过程序(JS 脚本、Applet 等)将无法读取到 Cookie 信息，这样能有效的防止 XSS 攻击。cookie 中有个属性 secure，当该属性设置为 true 时，表示创建的 Cookie 会被以安全的形式向服务器传输，也就是只能在 HTTPS 连接中被浏览器传递到服务器端进行会话验证，如果是 HTTP 连接则不会传递该 cookie 信息，所以不会被窃取到 Cookie 的具体内容。就是只允许在加密的情况下将 cookie 加在数据包请求头部，防止 cookie 被带出来。secure 属性是防止信息在传递的过程中被监听捕获后信息泄漏。但是这两个属性并不能解决 cookie 在本机出现的信息泄漏的问题。
+
+## v-if 和 v-for 为什么不能连用？
+
+> v-for 比 v-if 优先，如果每一次都需要遍历整个数组，将会影响速度，尤其是当之需要渲染很小一部分的时候 。可以采取多层包裹来解决性能损耗问题。例如外层给标签绑定指令 v-if 或者是内层标签绑定 v-if
+
+## 单页面应用和多页面应用区别及优缺点?
+
+-   单页应用：
+    -   优点：
+        -   用户体验好，快，内容的改变不需要重新加载整个页面，基于这一点 spa 对服务器压力较小
+        -   前后端分离
+        -   页面切换体验好
+    -   缺点：
+        -   不利于 seo
+        -   导航不可用，需要自己实现导航
+        -   初次加载好事长
+        -   页面复杂度提高
+-   多页应用
+    -   优点：
+        -   对于 SEO 友好
+        -   容易扩展
+        -   更易的数据分析
+    -   缺点：
+        -   程序开发成本高
+        -   增加服务端压力，多页面会不停的加载
+        -   用户体验相对较差
