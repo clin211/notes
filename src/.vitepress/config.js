@@ -6,12 +6,15 @@ module.exports = {
         nav: [
             { text: '首页', link: '/' },
             {
-                text: '前端',
+                text: '基础',
                 items: [
                     { text: 'javascript', link: '/front-end/js/' },
                     { text: 'vue', link: '/front-end/vue/' },
                     { text: 'react', link: '/front-end/react/' },
-                    { text: '微信小程序', link: '/front-end/wechat/' }
+                    { text: 'babel', link: '/front-end/babel/' },
+                    { text: 'webpack', link: '/front-end/webpack/' },
+                    { text: '微信小程序', link: '/front-end/wechat/' },
+                    { text: 'node', link: '/front-end/node/' },
                 ]
             },
             {
@@ -34,6 +37,9 @@ module.exports = {
             '/front-end/vue/': [{ text: '', link: '/front-end/vue/' }],
             '/front-end/react/': [{ text: '', link: '/front-end/react/' }],
             '/front-end/wechat/': [{ text: '', link: '/front-end/wechat/' }],
+            '/front-end/webpack/': [{ text: '', link: '/front-end/webpack/' }],
+            '/front-end/babel/': [{ text: '', link: '/front-end/babel/' }],
+            '/front-end/node/': [{text:'koa基础', link: '/front-end/node/'}],
             '/project/': [{ text: '', link: '/' }],
             '/database/mongodb/': [{ text: '', link: '/' }],
             '/database/redis/': [{ text: '', link: '/' }],
