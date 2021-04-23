@@ -1,6 +1,6 @@
 ## 什么是 koa？
 
-koa 是基于 Node.js 平台的下一代 web 开发框架，致力于成为应用和 API 开发领域中的一个更小、更富有表现力、更健壮的基石；利用*async 函数*丢弃回调函数，并增强错误处理，koa 没有任何预置的中间件，可快速的编写服务端应用程序。
+[koa](https://koajs.com/) ([中文网](https://www.koajs.com.cn/))是基于 Node.js 平台的下一代 web 开发框架，致力于成为应用和 API 开发领域中的一个更小、更富有表现力、更健壮的基石；利用*async 函数*丢弃回调函数，并增强错误处理，koa 没有任何预置的中间件，可快速的编写服务端应用程序。
 
 ## 核心概念
 
@@ -10,19 +10,23 @@ koa 是基于 Node.js 平台的下一代 web 开发框架，致力于成为应�
 
 ## 初识 koa
 
-```git
+```shell
+// 创建一个 acquaintance 的文件夹
 $ mkdir acquaintance
+
+// 进入创建的文件夹
 $ cd acquaintance
+
+// 初始化 package.json
 $ npm init -y
+
+// 安装 koa，安装完之后
 $ npm i koa
 ```
 
-> 上面三条命令是：
->
-> -   创建一个 acquaintance 的文件夹
-> -   进入创建的文件夹
-> -   初始化 package.json
-> -   安装 koa，安装完之后可以在 package.json 中查看安装的所有依赖
+::: tip
+可以在 package.json 中查看安装的所有依赖
+:::
 
 在工程目录里创建一个 app.js，代码如下：
 
@@ -78,7 +82,7 @@ app.listen(3003)
 执行命令时，终端的路径必须指向当前程序
 :::
 
-## 路由基础用法&中间件注册
+## 路由&中间件
 
 ### 安装依赖：[@koa/router](https://www.npmjs.com/package/@koa/router)
 
@@ -131,7 +135,7 @@ router.get('/user', async ctx => {
 const Koa = require('koa')
 const Router = require('@koa/router')
 const app = new Koa()
-const router = new Router({ prefix: '/api/v1' })
+const router = new Router({ prefix: '/api/v1' }) // 添加接口前缀
 
 router.get('/', async ctx => {
     ctx.body = {
@@ -159,14 +163,14 @@ app.listen(3003)
 ```
 
 在浏览器中请求：`http://localhost:3003/api/v1`、`http://localhost:3003/api/v1/user`，结果如下图：<br />
-<img src="./assets/218479d47f383ef974d2fda8adceb32.png" style=" box-shadow: 2px 1px 1px #d0c6c629;vertical-align: top;" />
-<img src="./assets/2b6d9070e5014f6bfd01b61adec5d93.png" style="box-shadow: 2px 1px 1px #d0c6c629;vertical-align: top;" />
+<img src="./assets/218479d47f383ef974d2fda8adceb32.png" style=" box-shadow: 2px 1px 1px #d0c6c629;vertical-align: top; margin-top: 10px" />
+<img src="./assets/2b6d9070e5014f6bfd01b61adec5d93.png" style="box-shadow: 2px 1px 1px #d0c6c629;vertical-align: top; margin-top: 10px" />
 
-## koa 工作原理
+### 中间件
 
-Koa 通过 use 方法注册和串联中间件，也就是洋葱模型；所谓洋葱模型，就是指每一个 Koa 中间件都是一层洋葱圈，它即可以掌管请求进入，也可以掌管响应返回。换句话说：外层的中间件可以影响内层的请求和响应阶段，内层的中间件只能影响外层的响应阶段。
+中间件其实就是一个个函数，通过`app.use()`注册；在 koa 中只会自动执行第一个中间件，后面的都需要我们自己调用，koa 在执行中间件的时候都会携带两个参数`context`(可简化为`ctx`)和`next`，`context`是 koa 的上下文对象，`next`就是下一个中间件函数;也就是洋葱模型；所谓洋葱模型，就是指每一个 Koa 中间件都是一层洋葱圈，它即可以掌管请求进入，也可以掌管响应返回。换句话说：外层的中间件可以影响内层的请求和响应阶段，内层的中间件只能影响外层的响应阶段。
 <img src="./assets/85988383413dec71e0d17d991ac8a5a.png" style="display: block; box-shadow: 2px 1px 1px #d0c6c629;" />
-执行顺序：按照 app.use()的顺序执行，中间件可以通过 await next()来执行下一个中间件，同时在最后一个中间件执行完成后，依然有恢复执行的能力。即，通过洋葱模型，await next()控制调用 “下游”中间件，直到 “下游”没有中间件且堆栈执行完毕，最终流回“上游”中间件。这种方式有个优点，特别是对于日志记录以及错误处理等需要非常友好。
+执行顺序按照 app.use()的顺序执行，中间件可以通过 await next()来执行下一个中间件，同时在最后一个中间件执行完成后，依然有恢复执行的能力。即，通过洋葱模型，await next()控制调用 “下游”中间件，直到 “下游”没有中间件且堆栈执行完毕，最终流回“上游”中间件。
 
 下面这段代码的结果就能很好的诠释，示例：
 
@@ -206,25 +210,106 @@ this is a middleware 2 end
 this is a middleware 1 end
 ```
 
-## koa 构建 restful 接口及获取参数
+#### 中间件是如何执行的？
+
+```javascript
+// 通过 createServer 方法启动一个 Node.js 服务
+listen(...args) {
+    const server = http.createServer(this.callback());
+    return server.listen(...args);
+}
+```
+
+Koa 框架通过 http 模块的 createServer 方法创建一个 Node.js 服务，并传入 `this.callback()` 方法， `this.callback()` 方法源码精简实现如下：
+
+```javascript
+function compose(middleware) {
+    // 这里返回的函数，就是上文中的 fnMiddleware
+    return function (context, next) {
+        let index = -1
+        return dispatch(0)
+
+        function dispatch(i) {
+            if (i <= index) return Promise.reject(new Error('next() called multiple times'))
+            index = i
+            // 取出第 i 个中间件为 fn
+            let fn = middleware[i]
+
+            if (i === middleware.length) fn = next
+
+            // 已经取到了最后一个中间件，直接返回一个 Promise 实例，进行串联
+            // 这一步的意义是保证最后一个中间件调用 next 方法时，也不会报错
+            if (!fn) return Promise.resolve()
+
+            try {
+                // 把 ctx 和 next 方法传入到中间件 fn 中，并将执行结果使用 Promise.resolve 包装
+                // 这里可以发现，我们在一个中间件中调用的 next 方法，其实就是dispatch.bind(null, i + 1)，即调用下一个中间件
+                return Promise.resolve(fn(context, dispatch.bind(null, i + 1)));
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+    }
+}
+callback() {
+    // 从 this.middleware 数组中，组合中间件
+    const fn = compose(this.middleware);
+
+    // handleRequest 方法作为 `http` 模块的 `createServer` 方法参数，
+    // 该方法通过 `createContext` 封装了 `http.createServer` 中的 `request` 和 `response`对象，并将这两个对象放到 ctx 中
+    const handleRequest = (req, res) => {
+        const ctx = this.createContext(req, res);
+        // 将 ctx 和组合后的中间件函数 fn 传递给 this.handleRequest 方法
+        return this.handleRequest(ctx, fn);
+    };
+
+    return handleRequest;
+}
+handleRequest(ctx, fnMiddleware) {
+    const res = ctx.res;
+    res.statusCode = 404;
+    const onerror = err => ctx.onerror(err);
+    const handleResponse = () => respond(ctx);
+    // on-finished npm 包提供的方法，该方法在一个 HTTP 请求 closes，finishes 或者 errors 时执行
+    onFinished(res, onerror);
+    // 将 ctx 对象传递给中间件函数 fnMiddleware
+    return fnMiddleware(ctx).then(handleResponse).catch(onerror);
+}
+```
+
+将 Koa 一个中间件组合和执行流程梳理为以下步骤:
+
+-   通过 compose 方法组合各种中间件，返回一个中间件组合函数 fnMiddleware
+-   请求过来时，会先调用 handleRequest 方法，该方法完成：
+-   调用 createContext 方法，对该次请求封装出一个 ctx 对象；
+-   接着调用 this.handleRequest(ctx, fnMiddleware)处理该次请求。
+-   通过 fnMiddleware(ctx).then(handleResponse).catch(onerror)执行中间件。
+
+## 常见获取值的几种方式
 
 -   在 params 中取值，`eg：http://localhost:3003/api/v1/user/1`
 
 ```javascript
-//请求时若为：http://localhost:3003/api/v1/user
+// 前端请求
+await axios.post('http://localhost:3003/api/v1/user/1')
+
+// 服务端
 router.post('/user/:id',async ctx => {
     //获取url的id
-  cosnt { id } = ctx.params;//{id: 1}
+    cosnt { id } = ctx.params; // { id: 1 }
 })
 ```
 
 -   在 query 中取值，也就是获取问号后面的。
 
-```javascript
+```JavaScript
+// 前端
 await axios.post('http://localhost:3003/api/v1/user?name=Forest&age=18')
+
+// 服务端
 router.post('/user', async ctx => {
     //获取url的id
-    const { name, age } = ctx.request.query //{name: Forest, age: 18}
+    const { name, age } = ctx.request.query // { name: Forest, age: 18 }
 })
 ```
 
@@ -247,7 +332,7 @@ axios
 //在服务端获取则是：
 router.post('/user', async ctx => {
     //获取 url 的 id
-    const { Author } = ctx.request.header //{Author: token}
+    const { Author } = ctx.request.header // { Author: 'token' }
 })
 ```
 
@@ -255,12 +340,15 @@ router.post('/user', async ctx => {
     就以 `koa-body` 为例，首先安装 `npm i koa-body -S`，再引入：
 
 ```javascript
+// 服务端
 const body = require('koa-body);
+
 //然后在注册中间件：
 app.use(body());
+
 //在服务端获取则是：
 router.post('/user', async ctx => {
-    const res = ctx.request.body;//{name: 'Foreset', age: 18}
+    const res = ctx.request.body; // { name: 'Foreset', age: 18 }
 });
 
 
@@ -270,7 +358,7 @@ axios.post('http://localhost/user', {name: 'Foreset', age: 18}).then(res => {
 });
 ```
 
-restful 接口完整代码：
+## 创建 RESTful 接口
 
 ```javascript
 const Koa = require('koa')
@@ -287,7 +375,6 @@ router.get('/', async ctx => {
 })
 
 router.get('/user', async ctx => {
-    // const { name, age } = ctx.query
     ctx.body = {
         status: 200,
         message: 'success',
@@ -303,7 +390,6 @@ router.get('/user', async ctx => {
 
 router.get('/user/:id', async ctx => {
     const { id } = ctx.params
-    console.log('id:', id)
     ctx.body = {
         status: 200,
         message: 'success',
@@ -328,11 +414,11 @@ router.post('/user', async ctx => {
     }
 })
 
-app.use(koaBody()).use(router.routes()).use(router.allowedMethods)
+app.use(koaBody()).use(router.routes()).use(router.allowedMethods())
 
 app.listen(3003)
 ```
 
 ::: tip
-注意 koa-body 中间件的引入顺序必须在 router 之前，否则获取不了 post 请求携带的数据
+koa-body 中间件的引入顺序必须在 router 之前，否则获取不了 post 请求携带的数据
 :::
