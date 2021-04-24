@@ -281,8 +281,55 @@ ctx.set('Expires', nowTime.toUTCString())
         -   增加服务端压力，多页面会不停的加载
         -   用户体验相对较差
 
-一、v-model 该如何实现？
-监听change事件
+## v-model  该如何实现？
 
-二、vue2中为什么检测不到数组的变化，如何解决?
-因为性能问题，可以使用push，pop，shift，unshift，splice, sort，reverse这七个方法在vue中重写了，其他的没有
+> v-model 本质上是 v-on 和 v-bind 的语法糖。
+> v-model 在内部为不同元素抛出不同的事件，如：text 和 textarea 元素使用 value 属性和 input 事件；checkbox 和 radio 使用 checked 属性和 change 事件；select 字段将 value 作为 prop 并将 change 作为事件。
+
+-   v-model 作用在普通表单上
+
+```javascript
+<input v-model="myvalue" />
+//  等同于
+<input v-bind:value="myvalue" v-on:input="myvalue=$event.target.value">
+```
+
+v-model 作用在组件上 父组件 v-model 语法糖本质上可以修改为 `<child :value="message" @input="function(e){message = e}"></child>`在组件的实现中，我们是可以通过 v-model 属性 来配置子组件接收的 prop 名称，以及派发的事件名称。例如：
+
+```javascript
+// 父组件
+//html
+<mycom v-model="myvalue" />
+//等同于
+<mycom
+    :value="myvalue"
+    @input="(e)=>{myvalue = e}"
+/>
+
+//js
+new Vue({
+    el: "#app",
+    components:{
+        mycom
+    },
+    data: {
+        myvalue: "123"
+    }
+})
+
+// 子组件
+let mycom = {
+    props:['value'],
+    template:`<div><input :value="value"  @input="fn" /></div>`,
+    methods:{
+        fn(e){
+            this.$emit('input',e.target.value)
+        }
+    }
+}
+
+```
+
+## vue2 中为什么检测不到数组的变化，如何解决?
+
+由于由 JavaScript 的限制，Vue 不能检测数组变动。解决方案是通过全局 Vue.set 或者用实例方法 vm.$set 来修改。同样也可以通过变异方法 splice 来修改数组触发数据响应式
