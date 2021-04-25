@@ -333,3 +333,84 @@ let mycom = {
 ## vue2 中为什么检测不到数组的变化，如何解决?
 
 由于由 JavaScript 的限制，Vue 不能检测数组变动。解决方案是通过全局 Vue.set 或者用实例方法 vm.$set 来修改。同样也可以通过变异方法 splice 来修改数组触发数据响应式
+
+## 在 React 项目中，想要进行逻辑复用,有哪些方案？
+
+### 组件逻辑复用、组件视图复用
+
+#### 逻辑复用：HOC（高阶组件）
+
+> HOC（高阶组件）类似于高阶函数，在使用高阶组件时，传入一个组件，会返回一个组件。 举个我们使用频率比较多的例子 - withRouter
+
+```javascript
+function Acmp(props) {
+    const { history, localtion, match } = props
+    return <div>view</div>
+}
+
+const Bcmp = withRouter(Acmp)
+```
+
+`Acmp`组件本身不具备路由相关信息；但是`Acmp`中想要使用路由相关的信息，这是就可以使用`withRouter()`使`Acmp`拥有路由信息
+
+`withRouter()`这个高阶组件的作用就是复用传递给视图组件路由信息的逻辑；调用`withRouter()`将`Acmp`组件传递进去，`withRouter()`返回一个`Bcmp`；调用`Bcmp`组件时，会调用`Acmp`组件，并将路由信息传递给`Acmp`
+
+原理如下：
+
+```javascript
+const withRouter = (Cmp) => {
+    return () => <Route component={Cmp}>
+}
+```
+
+#### hooks
+
+> `hooks`的出现，主要目的就是解决逻辑复用的问题，相比高阶组件，`hooks` 的使用更加灵活，更自由。以`Router`的`hooks`对比`withRouter`；使用`withRouter`时，会一次性将路由所有相关数据导入组件，而 `hooks` 我们按照需求汁倒入`location`和`history`等；另外一个组件中，用`redux`相关数据，有需要路由信息时，结果如下
+
+```javascript
+function Acmp(props) {
+    const { history, location, match } = props
+    return <div>view</div>
+}
+
+const Bcmp = withRouter(Acmp)
+const Ccmp = connect(state => state)(Bcmp)
+```
+
+复用一个逻辑就需要在外面包一层，使用起来极不方便；使用 `hooks` 就比这方便得多且灵活
+
+#### render props
+
+render props 同样是 react 中，复用逻辑的小技巧，并不是标准定义的 API。 简单来说，就是组件具有一个 `render` 属性，该属性接收的是一个函数，该组件中要渲染的视图是 `render` 属性的返回值。 举一个我们使用最多的常见，`Route` 组件的 `render` 属性。
+
+```javascript
+<Route path="/home" render={() => <Home />} />
+```
+
+`Route` 组件中得这个 `render` 属性就是一个关于 render props 得实际应用；将组件内要渲染得视图放在 `render` 属性得返回值中，而组件本身是一个路由逻辑得公用。这样就做到了功能复用而视图自定义。
+
+Route 简易原理如下：
+
+```javascript
+function Route(props) {
+    const { path, render } = props
+    if (matchPath(path)) {
+        return (
+            <RouterContext.Consumer>
+                {context => render(context)}
+            </ROuterContext.Consumer>
+        )
+    }
+    return null
+}
+```
+
+> 高阶组件或 hook，通常用在单一的逻辑复用，比如实时获取当前滚动条位置，或定义 `state`，副作用处理等，都是单一的逻辑。 而 render props 通常是一个完整的功能复用，只是该功能中视图或部分视图需要由使用者定义，比如，弹窗功能，路由功能 等，项目中使用到这些功能的地方有很多，但是使用时，视图可能有差异
+
+## 在 React 中，针对类组件 和 函数组件，分别怎么去进行性能优化？
+
+React 中，如果组件更新了，会携带它的子孙级组件一起进行更新，虽然组件更新时，会有 diff 约束 DOM 更新。 但组件更新时的 diff，也会消耗很多性能。 如何避免项目中不必要的组件更新就是我们必须要面对的问题。 如果是类组件我们可以使用 `shouldComponentUpdate` 或者`PureComponent` , 函数组件则可以使用 hooks `useMemo()`
+::: tip 注意
+不管你使用的是哪种优化手段，`state` 一定是一个不可变值，否则拿不到组件更新前的数据， 也就没有办法进行对比，优化也就无从谈起。<br />
+官网手册：[React.memo](https://reactjs.org/docs/react-api.html#reactmemo)、[React.PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent)
+:::
