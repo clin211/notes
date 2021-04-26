@@ -414,3 +414,39 @@ React 中，如果组件更新了，会携带它的子孙级组件一起进行�
 不管你使用的是哪种优化手段，`state` 一定是一个不可变值，否则拿不到组件更新前的数据， 也就没有办法进行对比，优化也就无从谈起。<br />
 官网手册：[React.memo](https://reactjs.org/docs/react-api.html#reactmemo)、[React.PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent)
 :::
+
+## Vue3 中 Teleport 的作用是什么
+
+> 他的作用就是将一个嵌套在组件内部的某些内容可以渲染到当前组件外部。
+> 假设我们有一个 modal 组件，该组件分为触发 modal 打开的 button 以及模态框本体
+
+```HTML
+<div style="position: relative;">
+    <button @click="modalOpen = true">    Open full screen modal!  </button>
+    <telepot to="body">
+        <div v-if="modalOpen" class="modal">
+            I'm a modal!
+            <button @click="modalOpen = false">Close</button>
+        <div>
+    </telepot>
+</div>
+```
+
+::: tip  
+
+### teleport 可以包含 vue 组件使用么？
+
+可以，当 teleport 包含的是 vue 组件时，只是将该组件渲染到对应的标签当中，他的 props 等依然是从该组件的父组件进行注入。
+
+### 可以使用多个 teleport 指向同一标签么？
+
+可以的，就比如有一个复用的 modal 组件，他在多个地方被使用时会被指向相同标签比如 body。这时将会按照顺序进行追加，后挂载的元素会在较早挂载元素之后的位置。
+:::
+
+
+## 说一下vue3的composition api?
+> composition api意为组合式api，其主要是代码组织结构上的变动。vue2版本的options api，通过一个配置集合将代码划分为多个部分，使得代码组织结构比较清晰，比如父组件直接传入的数据存放于`props`，方法存放于`methods`等，但是其代码逻辑复用方面一直表现得不是很友好。composition api就是用于解决该问题，在vue3当中新增加了一个生命周期函数为`setup`。`setup`将在创建组件之前被执行，一旦`props`被解析时，`setup`将服务于composition api充当入口点。从使用角度来讲composition api主要有以下几点与options api不同响应式数据声明改变，通过`ref/reactive`两个方法均可以声明响应式数据，但是两者使用方式略有不同。`ref`所声明的响应式变量将会返回一个包含有value属性的对象，value的值就是该响应式变量所对应的值。所以在不论在获取还是改变ref声明的响应式变量时都需要通过.value进行操作。`reactive`返回的则是通过`Proxy`处理后的对象。使用生命周期函数时，变为从vue中引入对应生命周期函数例如`onMounted`，生命周期函数接受一个函数作为参数，该函数将会在对应生命周期阶段被执行。`watch`使用方式改变，`watch`作为函数接受至少两个参数，第一个参数为被`watch`的响应式数据，第二个参数为回调函数。当`watch`接受的响应式数据不同会有不同的使用方式，当`watch`的数据为通过`ref`声明的响应式变量时，`watch`直接接受`ref`响应式变量如`watch(refValue)`。当`watch`数据为通过`reactive`声明时，需要传入一个函数，该函数返回reactive变量如`watch(() => reactiveValue.value)`。同时新增watchEffect，他会收集内部依赖，当内部依赖发生改变时就会被执行。`props`现在作为`setup`的第一个参数进行接收，使用`props`时可以通过vue暴露的`toRefs`方法将`props`上的属性转为独立的`ref`响应式变量，从而进行使用。在`setup`当中代码将可以根据功能进行组织并提取，这极大程度的解决了以往代码可读性较低以及逻辑服用难的缺点。
+> ### composition api是强制使用的么？我还可以在vue3中使用options api的方式进行开发么？
+> composition api并不被强制使用，他只是在大型项目中对于代码复用以及逻辑提取上有很大的有点，并且他极大的提高了代码可读性。vue3是向下兼容的，在vue3当中依然可以通过options api进行开发。同时尤大本人曾在Vue Mastery上表示过，对于新手来讲，options api的学习可能对于上手vue来说更加快速。
+> ### 我还可以在setup中通过this来使用实例上的属性么？
+> 不可以，因为`setup`执行是在组件创建之前，这时还并没有组件实例，所以在setup中并没有this，如果希望使用一些实例上的方法，可以通过`getCurrentInstance`方法先获取实例在进行操作。
