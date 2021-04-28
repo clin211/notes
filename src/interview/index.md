@@ -515,9 +515,10 @@ class EventBusClass{  
             delete this.msgList[msgName];
         }
     }​
+}
 
-    const eventBus = new EventBusClass();
-    window.EventBus = eventBus;
+const eventBus = new EventBusClass();
+window.EventBus = eventBus;
 
 ```
 
@@ -527,20 +528,21 @@ class EventBusClass{  
 class luban {  
     fire(){    
         console.log('这里是基础伤害');
-    }}​
-
-    class firstSkill{  
-        constructor(luban){    
-            this.luban = luban;
-        }  
-
-        fire(){    
-            this.luban.fire();    
-            console.log('发射手雷');
-        }
     }
+}​
 
-    ​var luban1 = new luban;
-    luban1 = new firstSkill(luban1);
-    luban1.fire();
+class firstSkill{  
+    constructor(luban){    
+        this.luban = luban;
+    }  
+
+    fire(){    
+        this.luban.fire();    
+        console.log('发射手雷');
+    }
+}
+
+​var luban1 = new luban;
+luban1 = new firstSkill(luban1);
+luban1.fire();
 ```
