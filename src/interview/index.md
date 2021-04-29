@@ -546,3 +546,55 @@ class firstSkill{  
 luban1 = new firstSkill(luban1);
 luban1.fire();
 ```
+
+## 了解 js 中设计模式吗？动手实现一下单例模式？
+
+```javascript
+let CreateSingle = (function(){     
+    let instance;     
+    return function(name){         
+        if(instance){             
+            return instance;         
+        }         
+        return instance = new Single(name);     
+    } 
+})();​ 
+
+let Single = function(name){     
+    this.name = name; 
+}​ 
+
+Single.prototype.getName = function(){     
+    console.log(this.name); 
+}​ 
+let lili = new CreateSingle('lili'); 
+let wuyou = new CreateSingle('wuyou');​ 
+wuyou.getName()
+```
+
+## 虚拟 DOM 有什么作用，如何构建虚拟DOM？
+
+```javascript
+class Vdom{    
+    constructor(option){        
+        this.tagName = option.tagName;        
+        this.props = option.props || {};        
+        this.children = option.children || '';    
+    }    
+    
+    render(){        
+        let el = document.createElement(this.tagName);        
+        for(let propsKay in this.props){            
+            el.setAttribute(propsKay,this.props[propsKay])        
+        }        
+        
+        if(Array.isArray(this.children)){            
+            this.children.forEach((item)=>{                
+                el.appendChild(item.render());            
+            })        
+        }else{            
+            el.innerText = this.children        
+        }        
+    return el;    
+}}
+```
