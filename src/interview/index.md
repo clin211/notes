@@ -550,76 +550,344 @@ luban1.fire();
 ## 了解 js 中设计模式吗？动手实现一下单例模式？
 
 ```javascript
-let CreateSingle = (function(){     
-    let instance;     
-    return function(name){         
-        if(instance){             
-            return instance;         
-        }         
-        return instance = new Single(name);     
-    } 
-})();​ 
+let CreateSingle = (function(){    
+    let instance;    
+    return function(name){        
+        if(instance){            
+            return instance;        
+        }        
+        return instance = new Single(name);    
+    }
+})();​
 
-let Single = function(name){     
-    this.name = name; 
-}​ 
+let Single = function(name){    
+    this.name = name;
+}​
 
-Single.prototype.getName = function(){     
-    console.log(this.name); 
-}​ 
-let lili = new CreateSingle('lili'); 
-let wuyou = new CreateSingle('wuyou');​ 
+Single.prototype.getName = function(){    
+    console.log(this.name);
+}​
+let lili = new CreateSingle('lili');
+let wuyou = new CreateSingle('wuyou');​
 wuyou.getName()
 ```
 
-## 虚拟 DOM 有什么作用，如何构建虚拟DOM？
+## 虚拟  DOM  有什么作用，如何构建虚拟 DOM？
 
 ```javascript
-class Vdom{    
-    constructor(option){        
-        this.tagName = option.tagName;        
-        this.props = option.props || {};        
-        this.children = option.children || '';    
-    }    
-    
-    render(){        
-        let el = document.createElement(this.tagName);        
-        for(let propsKay in this.props){            
-            el.setAttribute(propsKay,this.props[propsKay])        
-        }        
-        
-        if(Array.isArray(this.children)){            
-            this.children.forEach((item)=>{                
-                el.appendChild(item.render());            
-            })        
-        }else{            
-            el.innerText = this.children        
-        }        
-    return el;    
-}}
+class Vdom {
+    constructor(option) {
+        this.tagName = option.tagName
+        this.props = option.props || {}
+        this.children = option.children || ''
+    }
+    render() {
+        let el = document.createElement(this.tagName)
+        for (let propsKay in this.props) {
+            el.setAttribute(propsKay, this.props[propsKay])
+        }
+        if (Array.isArray(this.children)) {
+            this.children.forEach(item => {
+                el.appendChild(item.render())
+            })
+        } else {
+            el.innerText = this.children
+        }
+        return el
+    }
+}
 ```
 
 ## 你对浏览器的理解？
-> - 浏览器的主要功能是将用户选择的 Web 资源呈现出来，它需要从服务器请求资源，并将其显示在浏览器窗口中，资源的格式通常是 HTML，也包括 PDF、image 及其他格式。用户用 URI（Uniform Resource Identifier 统一资源标识符）来指定所请求资源的位置。
-> - HTML 和 CSS 规范中规定了浏览器解释 HTML 文档的方式，由 W3C 组织对这些规范进行维护，W3C 是负责制定 Web 标准的组织。
-> - 但是浏览器厂商纷纷开发自己的扩展，对规范的遵循并不完善，这为 Web 开发者带来了严重的兼容性问题。
-> - 简单来说浏览器可以分为两部分，shell（外壳） 和 内核。其中 shell 的种类相对比较多，内核则比较少。
-> - shell 是指浏览器的外壳：例如菜单，工具栏等。主要是提供给用户界面操作，参数设置等等。它是调用内核来实现各种功能的。
-> - 内核才是浏览器的核心。内核是基于标记语言显示内容的程序或模块。也有一些浏览器并不区分外壳和内核。自从 Mozilla 将 Gecko 独立出来后，才有了外壳和内核的明确划分。
+
+> -   浏览器的主要功能是将用户选择的 Web 资源呈现出来，它需要从服务器请求资源，并将其显示在浏览器窗口中，资源的格式通常是 HTML，也包括 PDF、image 及其他格式。用户用 URI（Uniform Resource Identifier 统一资源标识符）来指定所请求资源的位置。
+> -   HTML 和 CSS 规范中规定了浏览器解释 HTML 文档的方式，由 W3C 组织对这些规范进行维护，W3C 是负责制定 Web 标准的组织。
+> -   但是浏览器厂商纷纷开发自己的扩展，对规范的遵循并不完善，这为 Web 开发者带来了严重的兼容性问题。
+> -   简单来说浏览器可以分为两部分，shell（外壳） 和 内核。其中 shell 的种类相对比较多，内核则比较少。
+> -   shell 是指浏览器的外壳：例如菜单，工具栏等。主要是提供给用户界面操作，参数设置等等。它是调用内核来实现各种功能的。
+> -   内核才是浏览器的核心。内核是基于标记语言显示内容的程序或模块。也有一些浏览器并不区分外壳和内核。自从 Mozilla 将 Gecko 独立出来后，才有了外壳和内核的明确划分。
 
 ## 介绍一下你对浏览器内核的理解？
-> - 浏览器内核主要分成两部分：渲染引擎和 JS 引擎。
-> - 渲染引擎的职责就是渲染，即在浏览器窗口中显示所请求的内容。默认情况下，渲染引擎可以显示 HTML、XML 文档及图片，它也可以借助插件（一种浏览器扩展）显示其他类型数据，例如使用 PDF 阅读器插件，可以显示 PDF 格式。
-> - JS 引擎：解析和执行 JavaScript 来实现网页的动态效果。
-> - 最开始渲染引擎和 JS 引擎并没有区分的很明确，后来 JS 引擎越来越独立，内核就倾向于只指渲染引擎。
+
+> -   浏览器内核主要分成两部分：渲染引擎和 JS 引擎。
+> -   渲染引擎的职责就是渲染，即在浏览器窗口中显示所请求的内容。默认情况下，渲染引擎可以显示 HTML、XML 文档及图片，它也可以借助插件（一种浏览器扩展）显示其他类型数据，例如使用 PDF 阅读器插件，可以显示 PDF 格式。
+> -   JS 引擎：解析和执行 JavaScript 来实现网页的动态效果。
+> -   最开始渲染引擎和 JS 引擎并没有区分的很明确，后来 JS 引擎越来越独立，内核就倾向于只指渲染引擎。
 
 ## 常见的浏览器内核比较
-> - Trident：这种浏览器内核是 IE 浏览器用的内核，因为在早期 IE 占有大量的市场份额，所以这种内核比较流行，以前有很多网页也是根据这个内核的标准来编写的，但是实际上这个内核对真正的网页标准支持不是很好。但是由于 IE 的高市场占有率，微软也很长时间没有更新 Trident 内核，就导致了 Trident 内核和 W3C 标准脱节。还有就是 Trident 内核的大量 Bug 等安全问题没有得到解决，加上一些专家学者公开自己认为 IE 浏览器不安全的观点，使很多用户开始转向其他浏览器。
-> - Gecko：这是 Firefox 和 Flock 所采用的内核，这个内核的优点就是功能强大、丰富，可以支持很多复杂网页效果和浏览器扩展接口，但是代价是也显而易见就是要消耗很多的资源，比如内存。
-> - Presto：Opera 曾经采用的就是 Presto 内核，Presto 内核被称为公认的浏览网页速度最快的内核，这得益于它在开发时的天生优势，在处理 JS 脚本等脚本语言时，会比其他的内核快 3 倍左右，缺点就是为了达到很快的速度而丢掉了一部分网页兼容性。
-> - Webkit：Webkit 是 Safari 采用的内核，它的优点就是网页浏览速度较快，虽然不及 Presto 但是也胜于 Gecko 和 Trident，缺点是对于网页代码的容错性不高，也就是说对网页代码的兼容性较低，会使一些编写不标准的网页无法正确显示。WebKit 前身是 KDE 小组的 KHTML 引擎，可以说 WebKit 是 KHTML 的一个开源的分支。
-> - Blink：谷歌在 Chromium Blog 上发表博客，称将与苹果的开源浏览器核心 Webkit 分道扬镳，在 Chromium 项目中研发 Blink 渲染引擎（即浏览器核心），内置于 Chrome 浏览器之中。其实 Blink 引擎就是 Webkit 的一个分支，就像 webkit 是 KHTML 的分支一样。Blink 引擎现在是谷歌公司与 Opera Software 共同研发，上面提到过的，Opera 弃用了自己的 Presto 内核，加入 Google 阵营，跟随谷歌一起研发 Blink。
+
+> -   Trident：这种浏览器内核是 IE 浏览器用的内核，因为在早期 IE 占有大量的市场份额，所以这种内核比较流行，以前有很多网页也是根据这个内核的标准来编写的，但是实际上这个内核对真正的网页标准支持不是很好。但是由于 IE 的高市场占有率，微软也很长时间没有更新 Trident 内核，就导致了 Trident 内核和 W3C 标准脱节。还有就是 Trident 内核的大量 Bug 等安全问题没有得到解决，加上一些专家学者公开自己认为 IE 浏览器不安全的观点，使很多用户开始转向其他浏览器。
+> -   Gecko：这是 Firefox 和 Flock 所采用的内核，这个内核的优点就是功能强大、丰富，可以支持很多复杂网页效果和浏览器扩展接口，但是代价是也显而易见就是要消耗很多的资源，比如内存。
+> -   Presto：Opera 曾经采用的就是 Presto 内核，Presto 内核被称为公认的浏览网页速度最快的内核，这得益于它在开发时的天生优势，在处理 JS 脚本等脚本语言时，会比其他的内核快 3 倍左右，缺点就是为了达到很快的速度而丢掉了一部分网页兼容性。
+> -   Webkit：Webkit 是 Safari 采用的内核，它的优点就是网页浏览速度较快，虽然不及 Presto 但是也胜于 Gecko 和 Trident，缺点是对于网页代码的容错性不高，也就是说对网页代码的兼容性较低，会使一些编写不标准的网页无法正确显示。WebKit 前身是 KDE 小组的 KHTML 引擎，可以说 WebKit 是 KHTML 的一个开源的分支。
+> -   Blink：谷歌在 Chromium Blog 上发表博客，称将与苹果的开源浏览器核心 Webkit 分道扬镳，在 Chromium 项目中研发 Blink 渲染引擎（即浏览器核心），内置于 Chrome 浏览器之中。其实 Blink 引擎就是 Webkit 的一个分支，就像 webkit 是 KHTML 的分支一样。Blink 引擎现在是谷歌公司与 Opera Software 共同研发，上面提到过的，Opera 弃用了自己的 Presto 内核，加入 Google 阵营，跟随谷歌一起研发 Blink。
 
 参考
-- [《浏览器内核的解析和对比》](http://www.cnblogs.com/fullhouse/archive/2011/12/19/2293455.html)
-- [《五大主流浏览器内核的源起以及国内各大浏览器内核总结》](https://blog.csdn.net/Summer_15/article/details/71249203)
+
+-   [《浏览器内核的解析和对比》](http://www.cnblogs.com/fullhouse/archive/2011/12/19/2293455.html)
+-   [《五大主流浏览器内核的源起以及国内各大浏览器内核总结》](https://blog.csdn.net/Summer_15/article/details/71249203)
+
+## extend 能做什么
+
+这个 API 很少用到，作用是扩展组件生成一个构造器，通常会与 `$mount` 一起使用。
+
+```javascript
+// 创建组件构造器
+let Component = Vue.extend({
+    template: '<div>test</div>'
+})
+// 挂载到 #app 上
+new Component().$mount('#app')
+// 除了上面的方式，还可以用来扩展已有的组件
+let SuperComponent = Vue.extend(Component)
+new SuperComponent({
+    created() {
+        console.log(1)
+    }
+})
+new SuperComponent().$mount('#app')
+```
+
+## mixin 和 mixins 区别
+
+> `mixin` 用于全局混入，会影响到每个组件实例，通常插件都是这样做初始化的。
+
+虽然文档不建议我们在应用中直接使用 `mixin`，但是如果不滥用的话也是很有帮助的，比如可以全局混入封装好的 `ajax` 或者一些工具函数等等。
+
+```javascript
+Vue.mixin({
+    beforeCreate() {
+        // ...逻辑
+        // 这种方式会影响到每个组件的 beforeCreate 钩子函数
+    }
+})
+```
+
+`mixins` 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 `mixins` 混入代码，比如上拉下拉加载数据这种逻辑等等。
+
+另外需要注意的是 `mixins` 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并，具体可以阅读文档。
+
+## 响应式原理
+
+Vue 内部使用了 `Object.defineProperty()` 来实现数据响应式，通过这个函数可以监听到 `set` 和 `get` 的事件。
+
+```javascript
+var data = { name: 'yck' }
+observe(data)
+let name = data.name // -> get value
+data.name = 'yyy' // -> change value
+
+function observe(obj) {
+    // 判断类型
+    if (!obj || typeof obj !== 'object') {
+        return
+    }
+    Object.keys(obj).forEach(key => {
+        defineReactive(obj, key, obj[key])
+    })
+}
+
+function defineReactive(obj, key, val) {
+    // 递归子属性
+    observe(val)
+    Object.defineProperty(obj, key, {
+        // 可枚举
+        enumerable: true,
+        // 可配置
+        configurable: true,
+        // 自定义函数
+        get: function reactiveGetter() {
+            console.log('get value')
+            return val
+        },
+        set: function reactiveSetter(newVal) {
+            console.log('change value')
+            val = newVal
+        }
+    })
+}
+```
+
+以上代码简单的实现了如何监听数据的 `set` 和 `get` 的事件，但是仅仅如此是不够的，因为自定义的函数一开始是不会执行的。只有先执行了依赖收集，才能在属性更新的时候派发更新，所以接下来我们需要先触发依赖收集。
+
+```html
+<div>{{name}}</div>
+```
+
+在解析如上模板代码时，遇到双大括号就会进行依赖收集。
+
+接下来我们先来实现一个 `Dep` 类，用于解耦属性的依赖收集和派发更新操作。
+
+```javascript
+// 通过 Dep 解耦属性的依赖和更新操作
+class Dep {
+    constructor() {
+        this.subs = []
+    }
+    // 添加依赖
+    addSub(sub) {
+        this.subs.push(sub)
+    }
+    // 更新
+    notify() {
+        this.subs.forEach(sub => {
+            sub.update()
+        })
+    }
+}
+// 全局属性，通过该属性配置 Watcher
+Dep.target = null
+```
+
+以上的代码实现很简单，当需要依赖收集的时候调用 `addSub`，当需要派发更新的时候调用 `notify`。
+
+接下来我们先来简单的了解下 Vue 组件挂载时添加响应式的过程。在组件挂载时，会先对所有需要的属性调用 `Object.defineProperty()`，然后实例化 `Watcher`，传入组件更新的回调。在实例化过程中，会对模板中的属性进行求值，触发依赖收集。
+
+因为这一小节主要目的是学习响应式原理的细节，所以接下来的代码会简略的表达触发依赖收集时的操作。
+
+```javascript
+class Watcher {
+    constructor(obj, key, cb) {
+        // 将 Dep.target 指向自己
+        // 然后触发属性的 getter 添加监听
+        // 最后将 Dep.target 置空
+        Dep.target = this
+        this.cb = cb
+        this.obj = obj
+        this.key = key
+        this.value = obj[key]
+        Dep.target = null
+    }
+    update() {
+        // 获得新值
+        this.value = this.obj[this.key]
+        // 调用 update 方法更新 Dom
+        this.cb(this.value)
+    }
+}
+```
+
+以上就是 `Watcher` 的简单实现，在执行构造函数的时候将 `Dep.target` 指向自身，从而使得收集到了对应的 Watcher，在派发更新的时候取出对应的 `Watcher` 然后执行 `update` 函数。
+
+接下来，需要对 `defineReactive` 函数进行改造，在自定义函数中添加依赖收集和派发更新相关的代码。
+
+```javascript
+function defineReactive(obj, key, val) {
+    // 递归子属性
+    observe(val)
+    let dp = new Dep()
+    Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: function reactiveGetter() {
+            console.log('get value')
+            // 将 Watcher 添加到订阅
+            if (Dep.target) {
+                dp.addSub(Dep.target)
+            }
+            return val
+        },
+        set: function reactiveSetter(newVal) {
+            console.log('change value')
+            val = newVal
+            // 执行 watcher 的 update 方法
+            dp.notify()
+        }
+    })
+}
+```
+
+以上所有代码实现了一个简易的数据响应式，核心思路就是手动触发一次属性的 `getter` 来实现依赖收集。
+
+现在我们就来测试下代码的效果，只需要把所有的代码复制到浏览器中执行，就会发现页面的内容全部被替换了。
+
+```javascript
+var data = { name: 'yck' }
+observe(data)
+function update(value) {
+    document.querySelector('div').innerText = value
+}
+// 模拟解析到 `{{name}}` 触发的操作
+new Watcher(data, 'name', update)
+// update Dom innerText
+data.name = 'yyy'
+```
+
+`Object.defineProperty` 的缺陷
+以上已经分析完了 Vue 的响应式原理，接下来说一点 `Object.defineProperty` 中的缺陷。
+
+如果通过下标方式修改数组数据或者给对象新增属性并不会触发组件的重新渲染，因为 `Object.defineProperty` 不能拦截到这些操作，更精确的来说，对于数组而言，大部分操作都是拦截不到的，只是 Vue 内部通过重写函数的方式解决了这个问题。
+
+对于第一个问题，Vue 提供了一个 API 解决
+
+```javascript
+export function set(target: Array<any> | Object, key: any, val: any): any {
+    // 判断是否为数组且下标是否有效
+    if (Array.isArray(target) && isValidArrayIndex(key)) {
+        // 调用 splice 函数触发派发更新
+        // 该函数已被重写
+        target.length = Math.max(target.length, key)
+        target.splice(key, 1, val)
+        return val
+    }
+    // 判断 key 是否已经存在
+    if (key in target && !(key in Object.prototype)) {
+        target[key] = val
+        return val
+    }
+    const ob = (target: any).__ob__
+    // 如果对象不是响应式对象，就赋值返回
+    if (!ob) {
+        target[key] = val
+        return val
+    }
+    // 进行双向绑定
+    defineReactive(ob.value, key, val)
+    // 手动派发更新
+    ob.dep.notify()
+    return val
+}
+```
+
+对于数组而言，Vue 内部重写了以下函数实现派发更新
+
+```javascript
+// 获得数组原型
+const arrayProto = Array.prototype
+export const arrayMethods = Object.create(arrayProto)
+// 重写以下函数
+const methodsToPatch = [
+    'push',
+    'pop',
+    'shift',
+    'unshift',
+    'splice',
+    'sort',
+    'reverse'
+]
+methodsToPatch.forEach(function (method) {
+    // 缓存原生函数
+    const original = arrayProto[method]
+    // 重写函数
+    def(arrayMethods, method, function mutator(...args) {
+        // 先调用原生函数获得结果
+        const result = original.apply(this, args)
+        const ob = this.__ob__
+        let inserted
+        // 调用以下几个函数时，监听新数据
+        switch (method) {
+            case 'push':
+            case 'unshift':
+                inserted = args
+                break
+            case 'splice':
+                inserted = args.slice(2)
+                break
+        }
+        if (inserted) ob.observeArray(inserted)
+        // 手动派发更新
+        ob.dep.notify()
+        return result
+    })
+})
+```

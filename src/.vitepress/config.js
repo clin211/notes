@@ -14,7 +14,7 @@ module.exports = {
                     { text: 'babel', link: '/front-end/babel/' },
                     { text: 'webpack', link: '/front-end/webpack/' },
                     { text: '微信小程序', link: '/front-end/wechat/' },
-                    { text: 'node', link: '/front-end/node/' },
+                    { text: 'node', link: '/front-end/node/' }
                 ]
             },
             {
@@ -39,7 +39,13 @@ module.exports = {
             '/front-end/wechat/': [{ text: '', link: '/front-end/wechat/' }],
             '/front-end/webpack/': [{ text: '', link: '/front-end/webpack/' }],
             '/front-end/babel/': [{ text: '', link: '/front-end/babel/' }],
-            '/front-end/node/': [{text:'koa基础', link: '/front-end/node/'}],
+            '/front-end/node/': [
+                { text: 'koa基础', link: '/front-end/node/' },
+                {
+                    text: 'webpack构建应用',
+                    link: '/front-end/node/1-webpack5构建应用'
+                }
+            ],
             '/project/': [{ text: '', link: '/' }],
             '/database/mongodb/': [{ text: '', link: '/' }],
             '/database/redis/': [{ text: '', link: '/' }],
