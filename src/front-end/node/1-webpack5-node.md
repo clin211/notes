@@ -98,7 +98,7 @@ $ npx babel-node src/app.js
 
 ### 在 postman 中请求接口
 
-![image-20210504072925109](assets/image-20210504072925109.png)
+![image-20210504072925109](./assets/image-20210504072925109.png)
 
 ### 配置 webpack [英文文档](https://webpack.js.org/concepts/) [中文文档](https://webpack.docschina.org/concepts/)
 
@@ -183,7 +183,7 @@ module.exports = {
 $ npx webpack
 ```
 
-![image-20210504083042708](assets/image-20210504083042708.png)![image-20210504083112577](assets/image-20210504083112577.png)
+![image-20210504083042708](./assets/image-20210504083042708.png)![image-20210504083112577](./assets/image-20210504083112577.png)
 
 > 构建成功！
 
@@ -352,7 +352,7 @@ $ npm run dev
 
 运行之后的效果图如下：
 
-![image-20210504095318351](assets/image-20210504095318351.png)
+![image-20210504095318351](./assets/image-20210504095318351.png)
 
 -   启动编译构建命令
 
@@ -362,11 +362,11 @@ $ npm run build
 
 运行效果如下图：
 
-![image-20210504095540666](assets/image-20210504095540666.png)
+![image-20210504095540666](./assets/image-20210504095540666.png)
 
 查看 dist 文件夹下被编译后的文件：
 
-![image-20210504095736714](assets/image-20210504095736714.png)
+![image-20210504095736714](./assets/image-20210504095736714.png)
 
 > 被压缩成了一整行！
 
@@ -415,7 +415,7 @@ trim_trailing_whitespace = false
 
 VSCode 使用 EditorConfig 需要去插件市场下载插件 `EditorConfig for VS Code` 。WebStorm 则不需要安装，直接使用 EditorConfig 配置即可。
 
-![image-20210504101228402](assets/image-20210504101228402.png)
+![image-20210504101228402](./assets/image-20210504101228402.png)
 
 :::
 
@@ -459,7 +459,7 @@ $ npx prettier --write .
 ::: tip 注意
 VSCode 编辑器使用 `Prettier` 配置需要下载插件 `Prettier - Code formatter`； WebStorm 则不需要安装，直接使用 EditorConfig 配置即可。
 
-![image-20210504102416728](assets/image-20210504102416728.png)
+![image-20210504102416728](./assets/image-20210504102416728.png)
 
 :::
 
@@ -478,13 +478,13 @@ $ npm i -D eslint
 
     > ESLint 安装成功后，执行 npx eslint --init，然后按照终端操作提示完成一系列设置来创建配置文件。
 
-![image-20210504103213588](assets/image-20210504103213588.png)
+![image-20210504103213588](./assets/image-20210504103213588.png)
 
 -   How would you like to use ESLint? ...(你想如何使用 ESLint?…)
 
     > 我这里选择第三个，检查语法，发现问题，并强制代码样式
 
-![image-20210504103418834](assets/image-20210504103418834.png)
+![image-20210504103418834](./assets/image-20210504103418834.png)
 
 -   What type of modules does your project use? ... （你的项目使用什么类型的模块?…）
 
@@ -494,29 +494,29 @@ $ npm i -D eslint
 
     > 这里并未使用 vue 和 react，所以选择 none of these
 
-![image-20210504104452973](assets/image-20210504104452973.png)
+![image-20210504104452973](./assets/image-20210504104452973.png)
 
 -   Does your project use TypeScript? (你的项目使用 TypeScript 吗?)
 
     > 项目中并没有使用 Typescript，所以选择 No
 
-![image-20210504104610444](assets/image-20210504104610444.png)
+![image-20210504104610444](./assets/image-20210504104610444.png)
 
 -   Where does your code run?(你的代码在哪里运行?)
 
     > 这是 node 项目，所以不需要选择浏览器环境
 
-![image-20210504105031201](assets/image-20210504105031201.png)
+![image-20210504105031201](./assets/image-20210504105031201.png)
 
 -   How would you like to define a style for your project? ... (你想怎样为你的项目定义风格？)
 
     > 我们这里选择 Use a popular style guide（使用一种流行的风格指南）
 
-![image-20210504105437959](assets/image-20210504105437959.png)
+![image-20210504105437959](./assets/image-20210504105437959.png)
 
 -   Which style guide do you want to follow? ... (你想遵循哪种风格指南?…)
 
-    ![image-20210504105647664](assets/image-20210504105647664.png)
+    ![image-20210504105647664](./assets/image-20210504105647664.png)
 
 -   What format do you want your config file to be in? ... (您希望配置文件的格式是什么?…)
 
@@ -526,18 +526,18 @@ $ npm i -D eslint
 
     > 默认 Yes，所以可以直接回车
 
-    ![image-20210504110100677](assets/image-20210504110100677.png)
+    ![image-20210504110100677](./assets/image-20210504110100677.png)
 
 -   所有配置如下
 
-    ![image-20210504110235680](assets/image-20210504110235680.png)
+    ![image-20210504110235680](./assets/image-20210504110235680.png)
 
 安装成功后，项目的根目录就会多一个`.eslintrc.js`文件
 
 ::: tip 注意
 
 VSCode 使用 ESLint 配置文件需要去插件市场下载插件 ESLint 。
-![image-20210504111438312](assets/image-20210504111438312.png)
+![image-20210504111438312](./assets/image-20210504111438312.png)
 
 :::
 
@@ -599,19 +599,19 @@ $ npx husky-init && npm install
 
 -   安装`husky`为开发依赖
 
-    ![image-20210504120333648](assets/image-20210504120333648.png)
+    ![image-20210504120333648](./assets/image-20210504120333648.png)
 
 -   创建`.husky`文件夹
 
-    ![image-20210504120510820](assets/image-20210504120510820.png)
+    ![image-20210504120510820](./assets/image-20210504120510820.png)
 
 -   在 `.husky` 目录创建 `pre-commit` hook，并初始化 `pre-commit` 命令为 `npm test`
 
-    ![image-20210504120612932](assets/image-20210504120612932.png)
+    ![image-20210504120612932](./assets/image-20210504120612932.png)
 
 -   修改 `package.json` 的 `scripts`，增加 `"prepare": "husky install"`
 
-    ![image-20210504120708693](assets/image-20210504120708693.png)
+    ![image-20210504120708693](./assets/image-20210504120708693.png)
 
 #### 配置 lint-staged
 
@@ -633,11 +633,11 @@ lint-staged 这个工具一般结合 husky 来使用，它可以让 husky 的 `h
     },
     ```
 
-    ![image-20210504121302298](assets/image-20210504121302298.png)
+    ![image-20210504121302298](./assets/image-20210504121302298.png)
 
 -   修改 `.husky/pre-commit hook` 的触发命令为：`npx lint-staged`
 
-    ![image-20210504121450870](assets/image-20210504121450870.png)
+    ![image-20210504121450870](./assets/image-20210504121450870.png)
 
 至此，husky 和 lint-staged 组合配置完成。
 
@@ -733,9 +733,9 @@ lint-staged 这个工具一般结合 husky 来使用，它可以让 husky 的 `h
 
 -   在 postman 中测试请求如下图
 
-    ![image-20210504125524850](assets/image-20210504125524850.png)
+    ![image-20210504125524850](./assets/image-20210504125524850.png)
 
-    ![image-20210504125437662](assets/image-20210504125437662.png)
+    ![image-20210504125437662](./assets/image-20210504125437662.png)
 
     到此自动注册路由就大功告成了，后面我们定义接口的时候就用手动一个一个的引入了。
 
@@ -760,7 +760,7 @@ lint-staged 这个工具一般结合 husky 来使用，它可以让 husky 的 `h
     }
     ```
 
-    ![image-20210504141154503](assets/image-20210504141154503.png)
+    ![image-20210504141154503](./assets/image-20210504141154503.png)
 
 - 在入口文件的顶部引入`module-alias/register`，也就是在`app.js`的顶部引入
 
@@ -768,7 +768,7 @@ lint-staged 这个工具一般结合 husky 来使用，它可以让 husky 的 `h
   require('module-alias/register')
   ```
 
-  ![image-20210504142411612](assets/image-20210504142411612.png)
+  ![image-20210504142411612](./assets/image-20210504142411612.png)
 
 > 配置成功后，将`/src/api/v1`内的逻辑全部提到`src/controller`中，使用别名引入`controller`中文件，修改后如下：
 
@@ -840,13 +840,13 @@ export default new TestController()
 
 - postman中测试接口
 
-  ![image-20210504143159248](assets/image-20210504143159248.png)
+  ![image-20210504143159248](./assets/image-20210504143159248.png)
 
-  ![image-20210504143225351](assets/image-20210504143225351.png)
+  ![image-20210504143225351](./assets/image-20210504143225351.png)
 
 commit时lint-staged没有通过：
 
-![image-20210504152231237](assets/image-20210504152231237.png)
+![image-20210504152231237](./assets/image-20210504152231237.png)
 
 > 上述问题是eslint发现`@controller/*`开头的在node_modules中没有找到，所以配置eslint就好了：
 >
@@ -862,7 +862,7 @@ commit时lint-staged没有通过：
 >
 > 
 
-![image-20210504154049823](assets/image-20210504154049823.png)
+![image-20210504154049823](./assets/image-20210504154049823.png)
 
 > 这个问题是由于`constructor`构造函数为空引起的，在`eslintrc.js`添加配置即可：'no-empty-function': ['error', { allow: ['constructors'] }]
 
