@@ -43,7 +43,7 @@ module.exports = {
                 { text: 'koa基础', link: '/front-end/node/' },
                 {
                     text: 'webpack构建应用',
-                    link: '/front-end/node/1-webpack5构建应用'
+                    link: '/front-end/node/1-webpack5-node'
                 }
             ],
             '/project/': [{ text: '', link: '/' }],
