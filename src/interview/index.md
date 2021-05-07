@@ -891,3 +891,8 @@ methodsToPatch.forEach(function (method) {
     })
 })
 ```
+
+## 请简述 Vue 中 Template 的实现思路？
+- 第一步是将 模板字符串 转换成 element ASTs（解析器）(abstract syntax tree,抽象语法树）
+- 第二步是对 AST 进行静态节点标记，主要用来做虚拟DOM的渲染优化（优化器）
+- 第三步是 使用 element ASTs 生成 render 函数代码字符串（代码生成器）

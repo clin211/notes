@@ -47,7 +47,13 @@ module.exports = {
                 }
             ],
             '/project/': [{ text: '', link: '/' }],
-            '/database/mongodb/': [{ text: '', link: '/' }],
+            '/database/mongoDB/': [
+                { text: '', link: '/' },
+                {
+                    text: '认识MongoDB',
+                    link: '/database/mongodb/01-MongoDB'
+                }
+            ],
             '/database/redis/': [{ text: '', link: '/' }],
             '/database/mysql/': [{ text: '', link: '/' }],
             '/go/': [{ text: '', link: '/go/' }],
