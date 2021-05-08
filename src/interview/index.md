@@ -893,6 +893,42 @@ methodsToPatch.forEach(function (method) {
 ```
 
 ## 请简述 Vue 中 Template 的实现思路？
-- 第一步是将 模板字符串 转换成 element ASTs（解析器）(abstract syntax tree,抽象语法树）
-- 第二步是对 AST 进行静态节点标记，主要用来做虚拟DOM的渲染优化（优化器）
-- 第三步是 使用 element ASTs 生成 render 函数代码字符串（代码生成器）
+
+-   第一步是将 模板字符串 转换成 element ASTs（解析器）(abstract syntax tree,抽象语法树）
+-   第二步是对 AST 进行静态节点标记，主要用来做虚拟 DOM 的渲染优化（优化器）
+-   第三步是 使用 element ASTs 生成 render 函数代码字符串（代码生成器）
+
+## 如何把真实 dom 转变为虚拟 dom，代码实现一下？
+
+```js
+function vDom(node) {
+    let nodeType = node.nodeType
+    let _vnode = null
+    if (nodeType === 1) {
+        //元素节点
+        let props = node.attributes
+        console.log(props)
+        let property = {}
+        for (let i = 0; i < props.length; i++) {
+            property[props[i].name] = props[i].nodeValue
+        }
+        _vnode = new VNode({
+            tagName: node.nodeName,
+            props: property,
+            type: nodeType
+        })
+        let children = node.childNodes
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].nodeType === 1 || children[i].length > 1) {
+                _vnode.appendChild(vDom(children[i]))
+            }
+        }
+    } else if (nodeType === 3) {
+        _vnode = new VNode({
+            type: nodeType,
+            value: node.nodeValue.trim()
+        })
+    }
+    return _vnode
+}
+```
