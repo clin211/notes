@@ -892,6 +892,25 @@ methodsToPatch.forEach(function (method) {
 })
 ```
 
+## **二、Vue3 中的数据响应式是怎么实现的？**
+
+**答案:**
+
+```js
+observe(data) {
+    let _this = this;
+    this._data = new Proxy(data, {
+        set(target, prop, newValue) {
+            let event = new CustomEvent(prop, {
+                detail: newValue
+            });
+            _this.dispatchEvent(event);
+            return Reflect.set(...arguments);
+        }
+    });
+}
+```
+
 ## 请简述 Vue 中 Template 的实现思路？
 
 -   第一步是将 模板字符串 转换成 element ASTs（解析器）(abstract syntax tree,抽象语法树）
