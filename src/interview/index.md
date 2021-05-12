@@ -951,3 +951,533 @@ function vDom(node) {
     return _vnode
 }
 ```
+
+## http 协议是做什么的?
+
+首先 http 协议是一种构建在 TCP 协议之上的应用层协议,主要是用途客户端和服务端的沟通.
+
+经过不断的发展,目前 http1.1 已经大范围使用.
+
+而 15 年提出的 http2.0 更是带来了很多崭新的功能和概念,现在我们来对比介绍一下.
+
+## http1.0 与 http1.1 之间的区别:
+
+1. **缓存策略:**
+
+http1.0 的缓存策略主要是依赖 header 中的 If-Modiified-Since,Expire(到期)
+
+http1.1 的缓存策略要比 http1.0 略多,例如 Entity tag(实体标签), If-Unmodified-Since, If-Match, If-None-Match 等.
+
+**2. 宽带和网络连接优化:**
+
+http1.0 中会存在一些性能浪费,比如我们的只需要对象中的一部分,但是每次请求返回的却是整个对象,这无疑造成了性能的损害
+
+http1.1 则不然,它可以通过在请求头处设置 range 头域,就可以返回请求资源的某一部分,也就是返回码为 206(Partial Content)的时候,这对于性能优化很有必要.
+
+> 这里所谓的请求资源的一部分,也就是大家常说的断点续传
+
+关于断点续传的应用场景,例如用户需要下载一个大文件,最佳的方式是将这个大文件分割成几部分,然后由多个进程同时进行.
+
+这个时候,我们可以在请求头中设置 range 字段,来规定分割的 byte 数范围.
+
+而服务端会给客户端返回一个包含着 content-range 的响应头,来对应相应的分割 byte 数范围
+
+请求头中:
+
+> Range: bytes=0-801 // 一般请求下载整个文件是 bytes=0- 或不用这个头
+
+响应头中:
+
+> Content-Range: bytes 0-800/801 //801:文件总大小
+
+**3. 新增部分错误通知:**
+
+http1.1 版本新增了 24 个错误状态响应码,比如
+
+> 409(Conflict)表示: 请求的资源与当前的状态发生冲突
+> 410(Gone)表示服务器上某个资源被永久性的删除了
+
+**4.Host 头处理:**
+
+http1.0 中默认每台服务器都绑定唯一的一个 IP 地址,所以请求消息中 url 并没有传递主机名,也就是 hostname.
+
+http1.1 中请求消息和响应消息都支持 Host 头域,而且,如果我们不传这个字段还会报一个 400(bad request)的状态码
+
+这里也介绍下头域的内容:
+
+**通用头域:**
+
+> **Cache-Control: 缓存头域 => 常见值为 no-cache(不允许缓存), no-store(无论请求还是响应均不允许缓存), max-age(规定可以客户端可以接受多长生命期的数据)** > **Keep-Alive: 使得服务端和客户端的链接长时间有效** > **Date: 信息发送的时间** > **Host: 请求资源的主机 IP 和端口号** > **Range: 请求资源的某一部分** > **User-Agent: 发出请求的用户的信息(鉴权)**
+
+**5. 长连接:**
+
+http1.1 支持长连接和请求的流水线(pipelining),在一个 TCP 链接上可以传送多个 http 请求和响应.这样就不用多次建立和关闭 TCP 连接了.
+
+---
+
+## http 与 https 的区别:
+
+1. https 协议需要 CA 申请证书(换句换说,是要钱的)
+2. http 协议运行在 TCP 协议之上,传输的内容都是明文传送,安全性较差,而 https 则是运行在 SSL/TLS 层之上, 而 SSL/TLS 层是运行在 TCP 层之上,https 传输的内容都是经过加密的,安全性较高
+3. http 与 https 使用不同的连接方式.其中 http 默认用的是 80 端口,而 https 默认用的是 443 端口(uzi 打 kid 的那个 443)
+
+> SSL/TLS ==> secure socket layer / transport layer security
+
+再整张图来看看,到底啥情况~
+
+![img](./assets/v2-41d21dc187d46adca28f041f46741791_720w.jpg)
+
+---
+
+## http2.0 和 http1.x 的区别:
+
+1. http1 的解析是基于文本协议的各式解析,而 http2.0 的协议解析是二进制格式,更加的强大
+2. **多路复用(Mutiplexing) :** 一个连接上可以有多个 request,且可以随机的混在一起,每个不同的 request 都有对应的 id,服务端可以通过 request_id 来辨别,大大加快了传输速率
+3. header 压缩: http1.x 中的 header 需要携带大量信息.而且每次都要重复发送.http2.0 使用 encode 来减少传输的 header 大小.而且客户端和服务端可以各自缓存(cache)一份 header filed 表,避免了 header 的重复传输,还可以减少传输的大小.
+4. 服务端推送(server push): 可以通过解析 html 中的依赖,只能的返回所需的其他文件(css 或者 js 等),而不用再发起一次请求.
+
+> 多路复用的示意图
+
+![img](./assets/v2-00c5f77f73479069508cb9a5a07b1e95_720w.jpg)
+
+> 普通请求示意图:
+
+![img](./assets/v2-b1393a293f47c9d021cfe59e57925d15_720w.jpg)
+
+> 服务端推送示意图:
+
+![img](./assets/v2-7d544ca2fbfa248d866cb3a2a88c45de_720w.jpg)
+
+```js
+Object.assign(obj1, obj2)
+```
+
+## 常用 hooks
+
+![image_1e3ubtm4c10eijcbtrhjf31aj534.png (881×492) (zybuluo.com)](./assets/image_1e3ubtm4c10eijcbtrhjf31aj534.png)
+
+React Hooks 则可以完美解决上面的嵌套问题，它拥有下面这几个特性。
+
+1. 多个状态不会产生嵌套，写法还是平铺的；
+2. 允许函数组件使用 state 和部分生命周期；
+3. 更容易将组件的 UI 与状态分离。
+
+```js
+function useWindowWidth() {
+    const [width, setWidth] = useState(window.innerWidth)
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(window.innerWidth)
+        }
+        window.addEventListener('resize', handleResize)
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [width])
+
+    return width
+}
+```
+
+> 上面是一个结合了 useState 和 useEffect 两个 hook 方法的例子，主要是在 resize 事件触发时获取到当前的 `window.innerWidth`。这个 useWindowWidth 方法可以拿来在多个地方使用。
+
+### useState
+
+useState 是 React Hooks 中很基本的一个 API，它的用法主要有这几种：
+
+1. useState 接收一个初始值，返回一个数组，数组里面分别是当前值和修改这个值的方法（类似 state 和 setState）；
+2. useState 接收一个函数，返回一个数组；
+3. setCount 可以接收新值，也可以接收一个返回新值的函数。
+
+```js
+const [ count1, setCount1 ] = useState(0);
+const [ count2, setCount2 ] = useState(() => 0);
+setCount1(1); // 修改 state
+```
+
+### #### useState和 class state 的区别
+
+虽然函数组件也有了 state，但是 function state 和 class state 还是有一些差异：
+
+1. function state 的粒度更细，class state 过于无脑；
+2. function state 保存的是快照，class state 保存的是最新值；
+3. 引用类型的情况下，class state 不需要传入新的引用，而 function state 必须保证是个新的引用。
+
+## ### useRef
+
+#### **useRef 有下面这几个特点：**
+
+1. `useRef` 是一个只能用于函数组件的方法；
+2. `useRef` 是除字符串 `ref`、函数 `ref`、`createRef` 之外的第四种获取 `ref` 的方法；
+3. `useRef` 在渲染周期内永远不会变，因此可以用来引用某些数据；
+4. 修改 `ref.current` 不会引发组件重新渲染。
+
+#### **useRef vs createRef：**
+
+1. 两者都是获取 ref 的方式，都有一个 current 属性；
+2. useRef 只能用于函数组件，createRef 可以用在类组件中；
+3. useRef 在每次重新渲染后都保持不变，而 createRef 每次都会发生变化。
+
+
+
+### useEffect
+
+`useEffect` 是一个 `Effect Hook`，常用于一些副作用的操作，在一定程度上可以充当 `componentDidMount`、`componentDidUpdate`、`componentWillUnmount` 这三个生命周期。
+
+`useEffect` 是非常重要的一个方法，可以说是 React Hooks 的灵魂，它用法主要有这么几种：
+
+1. `useEffect` 接收两个参数，分别是要执行的回调函数、依赖数组；
+2. 如果依赖数组为空数组，那么回调函数会在第一次渲染结束后（`componentDidMount`）执行，返回的函数会在组件卸载时（`componentWillUnmount`）执行；
+3. 如果不传依赖数组，那么回调函数会在每一次渲染结束后（`componentDidMount` 和 `componentDidUpdate`）执行；
+4. 如果依赖数组不为空数组，那么回调函数会在依赖值每次更新渲染结束后（componentDidUpdate）执行，这个依赖值一般是 state 或者 props。
+
+```js
+function App() {
+    useEffect(() => {
+        // 第一次渲染结束执行
+        const handleScroll = () => {}
+        window.addEventListener("scoll", handleScroll);
+        return () => {
+            // 组件卸载之前执行
+            window.removeEventListener("scoll", handleScroll);
+        }
+    }, []);
+    
+    useEffect(() => {
+        console.log("每次渲染结束都会执行")
+    })
+    
+    useEffect(() => {
+        console.log("只有在 count 变化后才会执行")
+    }, [count])
+}
+```
+
+useEffect 比较重要，它主要有这几个作用：
+
+1. 代替部分生命周期，如 componentDidMount、componentDidUpdate、componentWillUnmount；
+2. 更加 reactive，类似 mobx 的 reaction 和 vue 的 watch；
+3. 从命令式变成声明式，不需要再关注应该在哪一步做某些操作，只需要关注依赖数据；
+4. 通过 useEffect 和 useState 可以编写一系列自定义的 Hook。
+
+#### useEffect vs useLayoutEffect
+
+useLayoutEffect 也是一个 Hook 方法，从名字上看和 useEffect 差不多，他俩用法也比较像。
+在90%的场景下我们都会用 useEffect，然而在某些场景下却不得不用 useLayoutEffect。
+
+useEffect 和 useLayoutEffect 的区别是：
+
+1. useEffect 不会 block 浏览器渲染，而 useLayoutEffect 会；
+2. useEffect 会在浏览器渲染结束后执行，useLayoutEffect 则是在 DOM 更新完成后，浏览器绘制之前执行。
+
+这两句话该怎么来理解呢？我们以一个移动的方块为例子：
+
+```react
+const moveTo = (dom, delay, options) => {
+    dom.style.transform = `translate(${options.x}px)`
+    dom.style.transition = `left ${delay}ms`
+}
+const Animate = () => {
+    const ref = useRef();
+    useEffect(() => {
+        moveTo(ref.current, 500, { x: 600 })
+    }, [])
+    return (
+        <div className="animate">
+            <div ref={ref}>方块</div>
+        </div>
+    )
+}
+```
+
+![方块1.gif (870×596) (zybuluo.com)](./assets/方块1.gif)
+
+在 useEffect 里面会让这个方块往后移动 600px 距离，可以看到这个方块在移动过程中会闪一下。
+但如果换成了 useLayoutEffect 呢？会发现方块不会再闪动，而是直接出现在了 600px 的位置。
+
+```react
+const Animate = () => {
+    const ref = useRef();
+    useLayoutEffect(() => {
+        moveTo(ref.current, 500, { x: 600 })
+    }, [])
+    return (
+        <div className="animate">
+            <div ref={ref}>方块</div>
+        </div>
+    )
+}
+```
+
+原因是 useEffect 是在浏览器绘制之后执行的，所以方块一开始就在最左边，于是我们看到了方块移动的动画。
+然而 useLayoutEffect 是在绘制之前执行的，会阻塞页面的绘制，所以页面会在 useLayoutEffect 里面的代码执行结束后才去继续绘制，于是方块就直接出现在了右边。
+
+那么这里的代码是怎么实现的呢？以 preact 为例，useEffect 在 `options.commit` 阶段执行，而 useLayoutEffect 在 `options.diffed` 阶段执行。
+
+然而在实现 useEffect 的时候使用了 `requestAnimationFrame`，`requestAnimationFrame` 可以控制 useEffect 里面的函数在浏览器重绘结束，下次绘制之前执行。
+
+![image_1e405qmdf15ucvhr128s1upfd2o9.png (784×560) (zybuluo.com)](./assets/image_1e405qmdf15ucvhr128s1upfd2o9.png)
+
+### useMemo
+
+useMemo 的用法类似 useEffect，常常用于缓存一些复杂计算的结果。useMemo 接收一个函数和依赖数组，当数组中依赖项变化的时候，这个函数就会执行，返回新的值。
+
+```react
+const sum = useMemo(() => {
+    // 一系列计算
+}, [count])
+```
+
+举个例子会更加清楚 useMemo 的使用场景，我们就以下面这个 DatePicker 组件的计算为例：
+
+```react
+const render = useMemo(
+    () => {
+      const dateTable: Moment[] = [];
+      const firstDayOfMonth = (defaultValue || moment()).clone(); // clone
+      firstDayOfMonth.date(1); // 当月第一天
+      const day = firstDayOfMonth.day(); // 这天是周几
+      // 求出卡片展示的第一天（直接用算出本月第一天是周几进行计算）
+      const lastMonthDiffDay = (day + 6) % 7;
+      const lastMonth1 = firstDayOfMonth.clone();
+      lastMonth1.add(0 - lastMonthDiffDay - 1, 'days'); // 求出当前卡片展示的第一天（因为周日展示在第一天，所以要多算一天）
+      for (let i = 0; i < DATE.DATE_COL_COUNT * DATE.DATE_ROW_COUNT; i++) {
+        current = lastMonth1.clone().add(i, 'days');
+        dateTable.push(current);
+      }
+      return dateTable;
+    },
+    [defaultValue]
+  );
+```
+
+DatePicker 组件每次打开或者切换月份的时候，都需要大量的计算来算出当前需要展示哪些日期。
+然后再将计算后的结果渲染到单元格里面，这里可以使用 useMemo 来缓存，只有当传入的日期变化时才去计算。
+
+### useCallback
+
+和 useMemo 类似，只不过 useCallback 是用来缓存函数。
+
+#### 匿名函数导致不必要的渲染
+
+在我们编写 React 组件的时候，经常会用到事件处理函数，很多人都会简单粗暴的传一个箭头函数。
+
+```react
+class App extends Component {
+    render() {
+        return <h1 onClick={() => {}}></h1>
+    }
+}
+```
+
+这种箭头函数有个问题，那就是在每一次组件重新渲染的时候都会生成一个重复的匿名箭头函数，导致传给组件的参数发生了变化，对性能造成一定的损耗。
+
+在函数组件里面，同样会有这个传递新的匿名函数的问题。从下面这个例子来看，每次点击 div，就会引起 Counter 组件重新渲染。
+
+这次更新明显和 Input 组件无关，但每次重新渲染之后，都会创建新的 onChange 方法。这样相当于传给 Input 的 onChange 参数变化，即使 Input 内部做过 shadowEqual 也没有意义了，都会跟着重新渲染。
+
+原本只想更新 count 值的，可 Input 组件 却做了不必要的渲染。
+
+```react
+function App() {
+    const [ count, setCount ] = useState(0)
+    const [ inputValue, setInputValue ] = useState('')
+    
+    const onChange = (e) => {
+        setInputValue(e.target.value);
+    }
+    const increment = () => {
+        setCount(count + 1)
+    }
+    return (
+        <>
+            <Input value={inputValue} onChange={onChange} />
+            <div onClick={increment}>{count}</div>
+        </>
+    )
+}
+```
+
+这就是体现 useCallback 价值的地方了，我们可以用 useCallback 指定依赖项。在无关更新之后，通过 useCallback 取的还是上一次缓存起来的函数。
+
+因此，useCallback 常常配合 `React.memo` 来一起使用，用于进行性能优化。
+
+```react
+function App() {
+    const [ count, setCount ] = useState(0)
+    const [ inputValue, setInputValue ] = useState('')
+    
+    const onChange = useCallback((e) => {
+        setInputValue(e.target.value);
+    }, [])
+    const increment = useCallback(() => {
+        setCount(count + 1)
+    }, [count])
+    return (
+        <>
+            <Input value={inputValue} onChange={onChange} />
+            <div onClick={increment}>{count}</div>
+        </>
+    )
+}
+```
+
+### useReducer && useContext
+
+#### useReducer
+
+useReducer 和 useState 的用法很相似，甚至在 preact 中，两者实现都是一样的。
+useReducer 接收一个 reducer 函数和初始 state，返回了 state 和 dispatch 函数，常常用于管理一些复杂的状态，适合 action 比较多的场景。
+
+```react
+function Counter() {
+    const [count, dispatch] = useReducer((state, action) => {
+        switch(action.type) {
+            case "increment": 
+                return state + 1;
+            case "decrement": 
+                return state - 1;
+            default:
+                return state;
+        }
+    }, 0)
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={() => dispatch({ type: "increment"})}>
+                increment
+            </button>
+            <button onClick={() => dispatch({ type: "decrement"})}>
+                decrement
+            </button>
+        </div>
+    )
+}
+```
+
+#### useContext
+
+新版 Context 常常有一个提供数据的生产者（Provider），和一个消费数据的消费者（Consumer），我们需要通过 Consumer 来以 `render props` 的形式获取到数据。
+
+如果从祖先组件传来了多个 Provider，那最终就又陷入了 `render props` 嵌套地狱。
+
+```react
+<Context1.Consumer>
+    {context1 => (
+        <Context2.Consumer>
+            {context2 => (
+                 <Context3.Consumer>
+                    {context3 => (
+                        <div></div>
+                    )}
+                </Context3.Consumer>
+            )}
+        </Context2.Consumer>
+    )}
+</Context1.Consumer>
+```
+
+useContext 允许我们以扁平化的形式获取到 Context 数据。即使有多个祖先组件使用多个 Context.Provider 传值，我们也可以扁平化获取到每一个 Context 数据。
+
+```react
+const Context = createContext(null);
+
+function App() {
+    return (
+        <Context.Provider value={{ title: "hello, world" }}
+            <Child />
+        </Context.Provider>
+    )
+}
+function Child() {
+    const context = useContext(Context);
+    return <h1>{ context.title }</h1>
+}
+```
+
+#### 实现一个简单的 Redux
+
+通过 useReducer 和 useContext，我们完全可以实现一个小型的 Redux。
+***reducer.js***
+
+```react
+export const reducer = (state, action) => {
+        switch(action.type) {
+            case "increment": 
+                return state + 1;
+            case "decrement": 
+                return state - 1;
+            default:
+                return state;
+        }
+    }
+export const defaultState = 0;
+```
+
+***Context.js***
+
+```react
+export const Context = createContext(null);
+```
+
+***App.js***
+
+```react
+function App() {
+    const [state, dispatch] = useReducer(reducer, defaultState)
+
+    return (
+        <Context.Provider value={{state, dispatch}}>
+            <ChildOne />
+            <ChildTwo />
+        </Context.Provider>
+    )
+}
+function ChildOne() {
+    const { state, dispatch } = useContext(Context);
+    return (
+        <div>
+            <h1>{state}</h1>
+            <button onClick={() => dispatch({ type: "increment"})}>
+                increment
+            </button>
+            <button onClick={() => dispatch({ type: "decrement"})}>
+                decrement
+            </button>
+        </div>
+    )
+}
+```
+
+### 自定义hooks
+
+编写自定义 hook 必须以 use 开头，这样保证可以配合 eslint 插件使用。
+
+在 custom hooks 中也可以调用其他 hook，当前的 hook 也可以被其他 hook 或者组件调用。
+以官网上这个获取好友状态的自定义 Hook 为例：
+
+```react
+import { useState, useEffect } from 'react';
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline);
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+    };
+  });
+
+  return isOnline;
+}
+```
+
+这个自定义 Hook 里面对好友的状态进行了监听，每次状态更新的时候都会去更新 isOnline，当组件卸载的时候会清除掉这个监听。
+
+这就是 React Hooks 最有用的地方，它允许我们编写自定义 Hook，然后这个自定义 Hook 可以复用给多个组件，并且不会和 UI 耦合到一起。
