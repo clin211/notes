@@ -1091,12 +1091,12 @@ useState 是 React Hooks 中很基本的一个 API，它的用法主要有这几
 3. setCount 可以接收新值，也可以接收一个返回新值的函数。
 
 ```js
-const [ count1, setCount1 ] = useState(0);
-const [ count2, setCount2 ] = useState(() => 0);
-setCount1(1); // 修改 state
+const [count1, setCount1] = useState(0)
+const [count2, setCount2] = useState(() => 0)
+setCount1(1) // 修改 state
 ```
 
-### #### useState和 class state 的区别
+### #### useState 和 class state 的区别
 
 虽然函数组件也有了 state，但是 function state 和 class state 还是有一些差异：
 
@@ -1119,8 +1119,6 @@ setCount1(1); // 修改 state
 2. useRef 只能用于函数组件，createRef 可以用在类组件中；
 3. useRef 在每次重新渲染后都保持不变，而 createRef 每次都会发生变化。
 
-
-
 ### useEffect
 
 `useEffect` 是一个 `Effect Hook`，常用于一些副作用的操作，在一定程度上可以充当 `componentDidMount`、`componentDidUpdate`、`componentWillUnmount` 这三个生命周期。
@@ -1137,19 +1135,19 @@ function App() {
     useEffect(() => {
         // 第一次渲染结束执行
         const handleScroll = () => {}
-        window.addEventListener("scoll", handleScroll);
+        window.addEventListener('scoll', handleScroll)
         return () => {
             // 组件卸载之前执行
-            window.removeEventListener("scoll", handleScroll);
+            window.removeEventListener('scoll', handleScroll)
         }
-    }, []);
-    
+    }, [])
+
     useEffect(() => {
-        console.log("每次渲染结束都会执行")
+        console.log('每次渲染结束都会执行')
     })
-    
+
     useEffect(() => {
-        console.log("只有在 count 变化后才会执行")
+        console.log('只有在 count 变化后才会执行')
     }, [count])
 }
 ```
@@ -1164,7 +1162,7 @@ useEffect 比较重要，它主要有这几个作用：
 #### useEffect vs useLayoutEffect
 
 useLayoutEffect 也是一个 Hook 方法，从名字上看和 useEffect 差不多，他俩用法也比较像。
-在90%的场景下我们都会用 useEffect，然而在某些场景下却不得不用 useLayoutEffect。
+在 90%的场景下我们都会用 useEffect，然而在某些场景下却不得不用 useLayoutEffect。
 
 useEffect 和 useLayoutEffect 的区别是：
 
@@ -1283,7 +1281,7 @@ class App extends Component {
 function App() {
     const [ count, setCount ] = useState(0)
     const [ inputValue, setInputValue ] = useState('')
-    
+
     const onChange = (e) => {
         setInputValue(e.target.value);
     }
@@ -1307,7 +1305,7 @@ function App() {
 function App() {
     const [ count, setCount ] = useState(0)
     const [ inputValue, setInputValue ] = useState('')
-    
+
     const onChange = useCallback((e) => {
         setInputValue(e.target.value);
     }, [])
@@ -1334,9 +1332,9 @@ useReducer 接收一个 reducer 函数和初始 state，返回了 state 和 disp
 function Counter() {
     const [count, dispatch] = useReducer((state, action) => {
         switch(action.type) {
-            case "increment": 
+            case "increment":
                 return state + 1;
-            case "decrement": 
+            case "decrement":
                 return state - 1;
             default:
                 return state;
@@ -1399,14 +1397,14 @@ function Child() {
 #### 实现一个简单的 Redux
 
 通过 useReducer 和 useContext，我们完全可以实现一个小型的 Redux。
-***reducer.js***
+**_reducer.js_**
 
 ```react
 export const reducer = (state, action) => {
         switch(action.type) {
-            case "increment": 
+            case "increment":
                 return state + 1;
-            case "decrement": 
+            case "decrement":
                 return state - 1;
             default:
                 return state;
@@ -1415,13 +1413,13 @@ export const reducer = (state, action) => {
 export const defaultState = 0;
 ```
 
-***Context.js***
+**_Context.js_**
 
 ```react
 export const Context = createContext(null);
 ```
 
-***App.js***
+**_App.js_**
 
 ```react
 function App() {
@@ -1450,7 +1448,7 @@ function ChildOne() {
 }
 ```
 
-### 自定义hooks
+### 自定义 hooks
 
 编写自定义 hook 必须以 use 开头，这样保证可以配合 eslint 插件使用。
 
