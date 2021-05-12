@@ -1096,7 +1096,7 @@ const [count2, setCount2] = useState(() => 0)
 setCount1(1) // 修改 state
 ```
 
-### #### useState 和 class state 的区别
+#### useState 和 class state 的区别
 
 虽然函数组件也有了 state，但是 function state 和 class state 还是有一些差异：
 
@@ -1104,7 +1104,7 @@ setCount1(1) // 修改 state
 2. function state 保存的是快照，class state 保存的是最新值；
 3. 引用类型的情况下，class state 不需要传入新的引用，而 function state 必须保证是个新的引用。
 
-## ### useRef
+### useRef
 
 #### **useRef 有下面这几个特点：**
 
@@ -1189,7 +1189,7 @@ const Animate = () => {
 }
 ```
 
-![方块1.gif (870×596) (zybuluo.com)](./assets/方块1.gif)
+![方块1.gif (870×596) (zybuluo.com)](./assets/image.gif)
 
 在 useEffect 里面会让这个方块往后移动 600px 距离，可以看到这个方块在移动过程中会闪一下。
 但如果换成了 useLayoutEffect 呢？会发现方块不会再闪动，而是直接出现在了 600px 的位置。
