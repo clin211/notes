@@ -1455,27 +1455,191 @@ function ChildOne() {
 在 custom hooks 中也可以调用其他 hook，当前的 hook 也可以被其他 hook 或者组件调用。
 以官网上这个获取好友状态的自定义 Hook 为例：
 
-```react
-import { useState, useEffect } from 'react';
+```jsx
+import { useState, useEffect } from 'react'
 
 function useFriendStatus(friendID) {
-  const [isOnline, setIsOnline] = useState(null);
+    const [isOnline, setIsOnline] = useState(null)
 
-  useEffect(() => {
-    function handleStatusChange(status) {
-      setIsOnline(status.isOnline);
-    }
+    useEffect(() => {
+        function handleStatusChange(status) {
+            setIsOnline(status.isOnline)
+        }
 
-    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
-    return () => {
-      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
-    };
-  });
+        ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange)
+        return () => {
+            ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange)
+        }
+    })
 
-  return isOnline;
+    return isOnline
 }
 ```
 
 这个自定义 Hook 里面对好友的状态进行了监听，每次状态更新的时候都会去更新 isOnline，当组件卸载的时候会清除掉这个监听。
 
 这就是 React Hooks 最有用的地方，它允许我们编写自定义 Hook，然后这个自定义 Hook 可以复用给多个组件，并且不会和 UI 耦合到一起。
+
+## React 中 useCallback 和 useMemo 有什么区别
+
+-   useCallback 和 useMemo 参数相同，第一个参数是函数，第二个参数是依赖项的数组。
+-   useMemo、useCallback 都是使参数（函数）不会因为其他不相关的参数变化而重新渲染。
+-   与 useEffect 类似，[] 内可以放入你改变数值就重新渲染参数（函数）的对象。如果 [] 为空就是只渲染一次，之后都不会渲染。
+-   主要区别是 React.useMemo 将调用 fn 函数并返回其结果，而 React.useCallback 将返回 fn 函数而不调用它。
+
+## TypeScript 中 any 和 unknow 有什么区别
+
+-   `any`类型不作任何约束，编译时会跳过对其的类型检查
+-   `unknown`表示未知类型，写代码的时候还不清楚会得到怎样的数据类型，但它更安全。与 any 一样，所有类型都可以分配给 unknown。但是我们只能将 unknown 类型的变量赋值给 any 和 unknown；
+
+```ts
+let uncertain: unknown = 'Hello'!
+let notSure: any = uncertain
+```
+
+## git 常用的命令
+
+-   git init
+-   git clone
+-   git remote
+-   git reset
+-   git rebase
+-   git add
+-   git commit
+-   git pull
+-   git push
+-   git brach
+-   ...
+
+## 项目中的代码规范怎么去做
+
+> 可以通过 prettier、eslint、editorConfig、husky 来统一规范
+
+## react 中组件怎么设计
+
+高内聚低耦合、按业务、按功能、按粒度划分
+
+## react 中的声明周期
+
+![图片描述](./assets/5f8d5d360001728830020644.png)
+
+图 2.3.1 React v16.3 之前不同渲染流程组件调用生命周期函数的时机与方式
+
+图 2.3.1 分别以组件的首次渲染和更新渲染流程为主线描绘其生命周期函数的调用时机与方式，调用组件的生命周期函数前必须取得组件实例。首次渲染时以 `instance = new component (...)` 的方式创建并获得组件实例。更新渲染时以 `instance = workInProgress.stateNode` 的方式获得组件实例。
+
+> 注：上面的 `component` 指的是对应组件的构造函数，`workInProgress` 指的是对应组件的 Fiber 结点。
+
+React v15 版中组件的生命周期函数整体调用逻辑见图 2.3.2。
+
+![图片描述](./assets/5f8d5e580001c23316000739.jpg)
+
+图 2.3.2 React v15 版生命周期函数调用逻辑
+
+现在我们对生命周期的理解进行简单总结如下：
+
+React 组件生命周期是指使用 class 定义的组件在整个应用程序运行过程中会经历**首次渲染（挂载）**，**更新渲染** 和 **卸载**三个过程。在不同的过程可以调用不同的生命周期函数。组件在首次渲染时会被实例化，然后调用实例上面的 `componentWillMount`，`render` 和 `componentDidMount` 函数。组件在更新渲染时可以调用 `componentWillReceiveProps`，`shouldComponentUpdate`，`componentWillUpdate`，`render` 和 `componentDidUpdate` 函数。组件在卸载时可以调用 `componentWillUnmount` 函数。
+
+### React v16.3 之后的组件渲染流程与生命周期函数
+
+从 React v16.3 版本开始，React 引入了两个新的生命周期函数 `getDerivedStateFromProps` 和 `getSnapshotBeforeUpdate` 。同时 React 不再建议使用 `componentWillMount`，`componentWillReceiveProps` 和 `componentWillUpdate` 三个生命周期函数，如果使用的话会在控制台收到 Warning 信息，见图 2.3.3。
+
+![图片描述](./assets/5f8d5d960001e48017940950.png)
+
+从 React v16.3 版本开始，React 建议使用 `getDerivedStateFromProps` 和 `getSnapshotBeforeUpdate` 两个生命周期函数替代 `componentWillMount`，`componentWillReceiveProps` 和 `componentWillUpdate` 三个生命周期函数。这里需要注意的是 ** 新增的两个生命周期函数和原有的三个生命周期函数必须分开使用，不能混合使用 **。React v16.3 版本的组件生命周期函数整体调用逻辑见图 2.3.5。
+
+![图片描述](./assets/5f8d5de10001e0bc16000876.jpg)
+
+图 2.3.5 React v16.3 版组件生命周期函数整体调用逻辑
+
+现在我们对文章开头那个问题 — 对生命周期的理解进一步总结。
+
+React 组件生命周期是指使用 class 定义的组件在整个应用程序运行过程中会经历**首次渲染（挂载）**，**更新渲染** 和 **卸载**三个过程。在不同的过程可以调用不同的生命周期函数。组件在首次渲染时会被实例化，然后调用实例上面的 `componentWillMount`，`render` 和 `componentDidMount` 函数。组件在更新渲染时可以调用 `componentWillReceiveProps`，`shouldComponentUpdate`，`componentWillUpdate`，`render` 和 `componentDidUpdate` 函数。组件在卸载时可以调用 `componentWillUnmount` 函数。React v16.3 版本中将 `componentWillMount`，`componentWillReceiveProps` 和 `componentWillUpdate` 标记为不安全的生命周期函数并不推荐使用，同时新增了 `getDerivedStateFromProps` 和 `getSnapshotBeforeUpdate` 函数用于代替它们。
+
+## 使用 hooks 模拟 componentDidMount
+
+```
+function Example() {
+  useEffect(() => console.log('mounted'), []);
+  return null;
+}
+```
+
+useEffect 拥有两个参数，第一个参数作为回调函数会在浏览器布局和绘制完成后调用，因此它不会阻碍浏览器的渲染进程。
+第二个参数是一个数组
+
+-   当数组存在并有值时，如果数组中的任何值发生更改，则每次渲染后都会触发回调。
+-   当它不存在时，每次渲染后都会触发回调。
+-   当它是一个空列表时，回调只会被触发一次，类似于 componentDidMount。
+
+## hooks 模拟 shouldComponentUpdate
+
+```
+const MyComponent = React.memo(
+    _MyComponent,
+    (prevProps, nextProps) => nextProps.count !== prevProps.count
+)
+```
+
+React.memo 包裹一个组件来对它的 props 进行浅比较,但这不是一个 hooks，因为它的写法和 hooks 不同,其实 React.memo 等效于 PureComponent，但它只比较 props。
+
+## 使用 hooks 模拟 componentDidUpdate
+
+```
+useEffect(() => console.log('mounted or updated'));
+```
+
+值得注意的是，这里的回调函数会在每次渲染后调用，因此不仅可以访问 componentDidUpdate，还可以访问 componentDidMount，如果只想模拟 componentDidUpdate，我们可以这样来实现。
+
+```
+const mounted = useRef();
+useEffect(() => {
+  if (!mounted.current) {
+    mounted.current = true;
+  } else {
+   console.log('I am didUpdate')
+  }
+});
+```
+
+useRef 在组件中创建“实例变量”。它作为一个标志来指示组件是否处于挂载或更新阶段。当组件更新完成后在会执行 else 里面的内容，以此来单独模拟 componentDidUpdate。
+
+## css 两栏布局
+
+-   浮动布局(float)
+-   绝对定位
+-   flex
+-   grid
+
+## flex: 1 的时候表示那些属性
+
+> 表示：flex-grow, flex-shrink, flex-basis
+
+**单值语法**: 值必须为以下其中之一:
+
+-   一个无单位**数([``](https://developer.mozilla.org/zh-CN/docs/Web/CSS/number))**: 它会被当作`flex:<number> 1 0;` `<flex-shrink>`的值被假定为 1，然后`<flex-basis>` 的值被假定为`0`。
+-   一个有效的**宽度([`width`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width))**值: 它会被当作 `<flex-basis>的值。`
+-   关键字`none`，`auto`或`initial`.
+
+**双值语法**: 第一个值必须为一个无单位数，并且它会被当作 `<flex-grow>` 的值。第二个值必须为以下之一：
+
+-   一个无单位数：它会被当作 `<flex-shrink>` 的值。
+-   一个有效的宽度值: 它会被当作 `<flex-basis>` 的值。
+
+**三值语法:**
+
+-   第一个值必须为一个无单位数，并且它会被当作 `<flex-grow>` 的值。
+-   第二个值必须为一个无单位数，并且它会被当作 `<flex-shrink>` 的值。
+-   第三个值必须为一个有效的宽度值， 并且它会被当作 `<flex-basis>` 的值。
+
+## 如何配置 webpack 的代码分割
+
+代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级
+
+> -   **入口起点**：使用 [`entry`](https://webpack.docschina.org/configuration/entry-context) 配置手动地分离代码。
+> -   **防止重复**：使用 [Entry dependencies](https://webpack.docschina.org/configuration/entry-context/#dependencies) 或者 [`SplitChunksPlugin`](https://webpack.docschina.org/plugins/split-chunks-plugin) 去重和分离 chunk。
+> -   **动态导入**：通过模块的内联函数调用来分离代码。
+
+## js 继承
+
+封装一个构造函数，然后在构造函数的`prototype`上横向扩展
+
