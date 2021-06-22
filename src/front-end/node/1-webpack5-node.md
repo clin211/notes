@@ -104,16 +104,16 @@ $ npx babel-node src/app.js
 
 ::: tip 核心概念
 
-- **entry**：入口；指示 `webpack` 应该使用哪个模块，默认值是 `./src/index.js`
+-   **entry**：入口；指示 `webpack` 应该使用哪个模块，默认值是 `./src/index.js`
 
-- **output**：输出；`output` 属性告诉 `webpack` 在哪里输出它所创建的 _bundle_，默认值是 `./dist/main.js`
+-   **output**：输出；`output` 属性告诉 `webpack` 在哪里输出它所创建的 _bundle_，默认值是 `./dist/main.js`
 
-- **loader**：loader 负责完成项目中各种各样资源模块的加载
+-   **loader**：loader 负责完成项目中各种各样资源模块的加载
 
-- **plugins**：插件；用来解决项目中除了资源模块打包以外的其他自动化工作。包括：打包优化，资源管理，注入环境变量
+-   **plugins**：插件；用来解决项目中除了资源模块打包以外的其他自动化工作。包括：打包优化，资源管理，注入环境变量
 
 -   **mode**：模式；通过选择 `development`, `production` 或 `none` 之中的一个，来设置 `mode` 参数，你可以启用 webpack 内置在相应环境下的优化。其默认值为 `production`。
-    
+
 :::
 
 > 在项目根目录创建`webpack.config.js`文件
@@ -762,13 +762,13 @@ lint-staged 这个工具一般结合 husky 来使用，它可以让 husky 的 `h
 
     ![image-20210504141154503](./assets/image-20210504141154503.png)
 
-- 在入口文件的顶部引入`module-alias/register`，也就是在`app.js`的顶部引入
+-   在入口文件的顶部引入`module-alias/register`，也就是在`app.js`的顶部引入
 
-  ```javascript
-  require('module-alias/register')
-  ```
+    ```javascript
+    require('module-alias/register')
+    ```
 
-  ![image-20210504142411612](./assets/image-20210504142411612.png)
+    ![image-20210504142411612](./assets/image-20210504142411612.png)
 
 > 配置成功后，将`/src/api/v1`内的逻辑全部提到`src/controller`中，使用别名引入`controller`中文件，修改后如下：
 
@@ -798,10 +798,10 @@ export default router
 
 ```javascript
 // src/controller/v1/demo.js
-class DemoController{
-    constructor(){}
+class DemoController {
+    constructor() {}
 
-    async demo(ctx){
+    async demo(ctx) {
         ctx.body = {
             status: 200,
             message: 'message',
@@ -819,10 +819,10 @@ export default new DemoController()
 
 ```javascript
 // src/controller/v1/test.js
-class TestController{
-    constructor(){}
+class TestController {
+    constructor() {}
 
-    async test(ctx){
+    async test(ctx) {
         ctx.body = {
             status: 200,
             message: 'message',
@@ -838,17 +838,17 @@ class TestController{
 export default new TestController()
 ```
 
-- postman中测试接口
+-   postman 中测试接口
 
-  ![image-20210504143159248](./assets/image-20210504143159248.png)
+    ![image-20210504143159248](./assets/image-20210504143159248.png)
 
-  ![image-20210504143225351](./assets/image-20210504143225351.png)
+    ![image-20210504143225351](./assets/image-20210504143225351.png)
 
-commit时lint-staged没有通过：
+commit 时 lint-staged 没有通过：
 
 ![image-20210504152231237](./assets/image-20210504152231237.png)
 
-> 上述问题是eslint发现`@controller/*`开头的在node_modules中没有找到，所以配置eslint就好了：
+> 上述问题是 eslint 发现`@controller/*`开头的在 node_modules 中没有找到，所以配置 eslint 就好了：
 >
 > ```js
 > // src/eslintrc.js
@@ -859,12 +859,9 @@ commit时lint-staged没有通过：
 >     }
 > }
 > ```
->
-> 
 
 ![image-20210504154049823](./assets/image-20210504154049823.png)
 
 > 这个问题是由于`constructor`构造函数为空引起的，在`eslintrc.js`添加配置即可：'no-empty-function': ['error', { allow: ['constructors'] }]
 
 完整代码见：[GitHub](https://github.com/big-front-end/webpack5-node)
-

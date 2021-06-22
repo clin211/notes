@@ -1,36 +1,36 @@
 {
-  "name": "notes",
-  "version": "1.0.0",
-  "description": "笔记记录、随笔",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vitepress dev src",
-    "build": "vitepress build src",
-    "serve": "vitepress serve src"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/changlin93/notes.git"
-  },
-  "keywords": [
-    "VitePress",
-    "JavaScript",
-    "Nodejs",
-    "vue",
-    "react",
-    "webpack",
-    "docker",
-    "MongoDB",
-    "MySQL",
-    "Go"
-  ],
-  "author": "Forest",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/changlin93/notes/issues"
-  },
-  "homepage": "https://github.com/changlin93/notes#readme",
-  "dependencies": {
-    "vitepress": "^0.13.0"
-  }
+    "name": "notes",
+    "version": "1.0.0",
+    "description": "笔记记录、随笔",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vitepress dev src",
+        "build": "vitepress build src",
+        "serve": "vitepress serve src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/changlin93/notes.git"
+    },
+    "keywords": [
+        "VitePress",
+        "JavaScript",
+        "Nodejs",
+        "vue",
+        "react",
+        "webpack",
+        "docker",
+        "MongoDB",
+        "MySQL",
+        "Go"
+    ],
+    "author": "Forest",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/changlin93/notes/issues"
+    },
+    "homepage": "https://github.com/changlin93/notes#readme",
+    "dependencies": {
+        "vitepress": "^0.13.0"
+    }
 }

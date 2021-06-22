@@ -15,7 +15,7 @@ module.exports = {
                     { text: 'webpack', link: '/front-end/webpack/' },
                     { text: '微信小程序', link: '/front-end/wechat/' },
                     { text: 'node', link: '/front-end/node/' },
-                    { text: 'react-native', link: '/front-end/react-native/' },
+                    { text: 'react-native', link: '/front-end/react-native/' }
                 ]
             },
             {
@@ -47,12 +47,12 @@ module.exports = {
                     link: '/front-end/node/1-webpack5-node'
                 }
             ],
-            '/front-end/react-native/':[
-                {text: 'React Native', link:'/front-end/react-native/'},
-                {text: '环境搭建', link:'/front-end/react-native/01'},
-                {text: '基本认识', link:'/front-end/react-native/02'},
-                {text: '开发必备', link:'/front-end/react-native/03'},
-                {text: '导航系统', link:'/front-end/react-native/04'},
+            '/front-end/react-native/': [
+                { text: 'React Native', link: '/front-end/react-native/' },
+                { text: '环境搭建', link: '/front-end/react-native/01' },
+                { text: '基本认识', link: '/front-end/react-native/02' },
+                { text: '开发必备', link: '/front-end/react-native/03' },
+                { text: '导航系统', link: '/front-end/react-native/04' }
             ],
             '/project/': [{ text: '', link: '/' }],
             '/database/mongoDB/': [
