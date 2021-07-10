@@ -15,6 +15,7 @@ module.exports = {
                     { text: 'webpack', link: '/front-end/webpack/' },
                     { text: '微信小程序', link: '/front-end/wechat/' },
                     { text: 'node', link: '/front-end/node/' },
+                    { text: 'nest', link: '/front-end/nest/' },
                     { text: 'react-native', link: '/front-end/react-native/' }
                 ]
             },
@@ -53,6 +54,10 @@ module.exports = {
                 { text: '基本认识', link: '/front-end/react-native/02' },
                 { text: '开发必备', link: '/front-end/react-native/03' },
                 { text: '导航系统', link: '/front-end/react-native/04' }
+            ],
+            '/front-end/nest/': [
+                {text: '概述', link:'/front-end/nest/'},
+                {text: '基本介绍', link:'/front-end/nest/01'},
             ],
             '/project/': [{ text: '', link: '/' }],
             '/database/mongoDB/': [
