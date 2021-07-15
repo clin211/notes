@@ -71,7 +71,7 @@ module.exports = {
             '/database/mysql/': [{ text: '', link: '/' }],
             '/go/': [
                 { text: 'Go', link: '/go/' },
-                { text: '起步', link: '/go/01-起步' }
+                { text: '起步', link: '/go/01' }
             ],
             '/interview/': [{ text: '面试', link: '/interview/' }]
         },
