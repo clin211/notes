@@ -56,8 +56,8 @@ module.exports = {
                 { text: '导航系统', link: '/front-end/react-native/04' }
             ],
             '/front-end/nest/': [
-                {text: '概述', link:'/front-end/nest/'},
-                {text: '基本介绍', link:'/front-end/nest/01'},
+                { text: '概述', link: '/front-end/nest/' },
+                { text: '基本介绍', link: '/front-end/nest/01' },
             ],
             '/project/': [{ text: '', link: '/' }],
             '/database/mongoDB/': [
@@ -69,7 +69,7 @@ module.exports = {
             ],
             '/database/redis/': [{ text: '', link: '/' }],
             '/database/mysql/': [{ text: '', link: '/' }],
-            '/go/': [{ text: '', link: '/go/' }],
+            '/go/': [{ text: 'Go', link: '/go/' }, { text: '起步', link: '/go/01-起步' }],
             '/interview/': [{ text: '面试', link: '/interview/' }]
         },
         lastUpdated: '更新时间',
