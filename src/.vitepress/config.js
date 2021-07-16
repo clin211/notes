@@ -29,6 +29,9 @@ module.exports = {
             },
             { text: '项目', link: '/project/' },
             { text: 'Go', link: '/go/' },
+            {
+                text: 'other', link: '/other/'
+            },
             { text: '面试', link: '/interview/' }
         ],
         sidebar: {
@@ -72,6 +75,10 @@ module.exports = {
             '/go/': [
                 { text: 'Go', link: '/go/' },
                 { text: '起步', link: '/go/01' }
+            ],
+            '/other/': [
+                { text: '概览', link: '/other/' },
+                { text: '研发准备', link: '/other/01-研发准备' }
             ],
             '/interview/': [{ text: '面试', link: '/interview/' }]
         },
