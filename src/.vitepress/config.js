@@ -78,7 +78,7 @@ module.exports = {
             ],
             '/other/': [
                 { text: '概览', link: '/other/' },
-                { text: '研发准备', link: '/other/01-研发准备' }
+                { text: '研发准备', link: '/other/01' }
             ],
             '/interview/': [{ text: '面试', link: '/interview/' }]
         },
