@@ -78,7 +78,7 @@ module.exports = {
             '/database/mysql/': [{ text: '', link: '/' }],
             '/go/': [
                 { text: 'Go', link: '/go/' },
-                { text: '起步', link: '/go/01' }
+                { text: '起步', link: '/go/01基础' },
             ],
             '/utils/git/': [
                 { text: 'git', link: '/utils/git/'},
