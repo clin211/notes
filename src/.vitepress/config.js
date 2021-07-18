@@ -31,8 +31,9 @@ module.exports = {
             { text: 'Go', link: '/go/' },
             {
                 text: '工具', items: [
-                {text: 'git', link:'/utils/git/'}
-            ] },
+                    { text: 'git', link: '/utils/git/' }
+                ]
+            },
             {
                 text: 'other', link: '/other/'
             },
@@ -79,11 +80,12 @@ module.exports = {
             '/go/': [
                 { text: 'Go', link: '/go/' },
                 { text: '起步', link: '/go/01-基础' },
+                { text: '数组与切片', link: '/go/02-数组与切片' },
             ],
             '/utils/git/': [
-                { text: 'git', link: '/utils/git/'},
-                { text: '基本配置及常用命令', link: '/utils/git/01'},
-                { text: '常见使用场景', link: '/utils/git/02'},
+                { text: 'git', link: '/utils/git/' },
+                { text: '基本配置及常用命令', link: '/utils/git/01' },
+                { text: '常见使用场景', link: '/utils/git/02' },
             ],
             '/other/': [
                 { text: '概览', link: '/other/' },
