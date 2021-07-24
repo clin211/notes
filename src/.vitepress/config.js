@@ -30,7 +30,8 @@ module.exports = {
             { text: '项目', link: '/project/' },
             { text: 'Go', link: '/go/' },
             {
-                text: '工具', items: [
+                text: '工具',
+                items: [
                     { text: 'git', link: '/utils/git/' }
                 ]
             },
@@ -81,6 +82,7 @@ module.exports = {
                 { text: 'Go', link: '/go/' },
                 { text: '起步', link: '/go/01-基础' },
                 { text: '数组与切片', link: '/go/02-数组与切片' },
+                { text: '流程控制与循环', link: '/go/03-流程控制与循环' },
             ],
             '/utils/git/': [
                 { text: 'git', link: '/utils/git/' },
