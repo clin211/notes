@@ -83,6 +83,7 @@ module.exports = {
                 { text: '起步', link: '/go/01-基础' },
                 { text: '数组与切片', link: '/go/02-数组与切片' },
                 { text: '流程控制与循环', link: '/go/03-流程控制与循环' },
+                { text: 'map', link: '/go/04-map' },
             ],
             '/utils/git/': [
                 { text: 'git', link: '/utils/git/' },
