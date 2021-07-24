@@ -86,7 +86,7 @@ module.exports = {
                 { text: 'map', link: '/go/04-map' },
             ],
             '/utils/git/': [
-                { text: 'git', link: '/utils/git/' },
+                { text: 'Git', link: '/utils/git/' },
                 { text: '基本配置及常用命令', link: '/utils/git/01' },
                 { text: '常见使用场景', link: '/utils/git/02' },
             ],
