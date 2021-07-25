@@ -11,8 +11,6 @@ module.exports = {
                     { text: 'javascript', link: '/front-end/js/' },
                     { text: 'vue', link: '/front-end/vue/' },
                     { text: 'react', link: '/front-end/react/' },
-                    { text: 'babel', link: '/front-end/babel/' },
-                    { text: 'webpack', link: '/front-end/webpack/' },
                     { text: '微信小程序', link: '/front-end/wechat/' },
                     { text: 'node', link: '/front-end/node/' },
                     { text: 'nest', link: '/front-end/nest/' },
@@ -32,7 +30,8 @@ module.exports = {
             {
                 text: '工具',
                 items: [
-                    { text: 'git', link: '/utils/git/' }
+                    { text: 'Git', link: '/utils/git/' },
+                    { text: 'Docker', link: '/utils/docker/' },
                 ]
             },
             {
@@ -89,6 +88,14 @@ module.exports = {
                 { text: 'Git', link: '/utils/git/' },
                 { text: '基本配置及常用命令', link: '/utils/git/01' },
                 { text: '常见使用场景', link: '/utils/git/02' },
+                { text: '多人协作', link: '/utils/git/03' },
+            ],
+            '/utils/docker/': [
+                { text: 'Docker', link: '/utils/docker/' },
+                { text: 'docker', link: '/utils/docker/01-docker' },
+                { text: 'docker-compose', link: '/utils/docker/02-docker-compose' },
+                { text: 'Dockerfile', link: '/utils/docker/03-Dockerfile' },
+                { text: 'CI/CD', link: '/utils/docker/04-ci' },
             ],
             '/other/': [
                 { text: '概览', link: '/other/' },
