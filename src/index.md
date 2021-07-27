@@ -3,8 +3,8 @@ home: true
 # heroImage: /logo.png
 heroAlt: 文档站点
 heroText: Forest
-# tagline: Hero subtitle
 actionText: Get Started
+# tagline: Hero subtitle
 actionLink: /front-end/js/
 features:
     - title: 学习笔记
@@ -22,6 +22,25 @@ features:
 #     details: VitePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded.
 footer: MIT Licensed | Copyright © 2021-present Forest
 ---
+
+<!-- <div style="width: 100%; display: flex; align-items: baseline; jusitfy-content:space-bwtwwen">
+  <h3>善思者不穷于一物，不善学者穷于物物</h3>
+  <p style="margin-left: 100px">----- 明·庄元臣</p>
+</div> -->
+<div style="width: 100%; display: flex; align-items: baseline; jusitfy-content:space-bwtwwen">
+  <h5>水之积也不厚，则其负大舟也无力。</h5>
+  <p style="margin-left: 100px">----- 庄子</p>
+</div>
+
+<div style="width: 100%; display: flex; align-items: baseline; jusitfy-content:space-bwtwwen">
+  <h5>旦旦而学之， 久而不怠焉， 迄乎成。</h5>
+  <p style="margin-left: 100px">----- 彭端淑</p>
+</div>
+
+<div style="width: 100%; display: flex; align-items: baseline; jusitfy-content:space-bwtwwen">
+  <h5>就算你特别聪明，也要学习，从头学起！</h5>
+  <p style="margin-left: 100px">----- 屠格涅夫</p>
+</div>
 
 <!-- ---
 home: true -->
