@@ -84,6 +84,7 @@ module.exports = {
                 { text: '流程控制与循环', link: '/go/03-流程控制与循环' },
                 { text: 'map', link: '/go/04-map' },
                 { text: '函数', link: '/go/05-函数' },
+                { text: '结构体与方法', link: '/go/06-结构体与方法' },
             ],
             '/utils/git/': [
                 { text: 'Git', link: '/utils/git/' },
