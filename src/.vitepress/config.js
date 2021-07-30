@@ -48,7 +48,10 @@ module.exports = {
             ],
             '/front-end/vue/': [{ text: '', link: '/front-end/vue/' }],
             '/front-end/react/': [{ text: '', link: '/front-end/react/' }],
-            '/front-end/wechat/': [{ text: '', link: '/front-end/wechat/' }],
+            '/front-end/typescript/': [
+                { text: 'TypeScript', link: '/front-end/typescript/' },
+                { text: '环境准备', link: '/front-end/typescript/01-环境准备' },
+            ],
             '/front-end/webpack/': [{ text: '', link: '/front-end/webpack/' }],
             '/front-end/node/': [
                 { text: 'koa基础', link: '/front-end/node/' },
