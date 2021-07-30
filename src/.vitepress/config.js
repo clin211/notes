@@ -110,7 +110,7 @@ module.exports = {
             ],
             '/interview/': [{ text: '面试', link: '/interview/' }]
         },
-        lastUpdated: '更新时间',
+        // lastUpdated: '更新时间',
         // 假定是 GitHub. 同时也可以是一个完整的 GitLab URL
         repo: '',
         // 假如文档不是放在仓库的根目录下：
