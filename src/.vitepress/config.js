@@ -11,21 +11,22 @@ module.exports = {
                     { text: 'javascript', link: '/front-end/js/' },
                     { text: 'vue', link: '/front-end/vue/' },
                     { text: 'react', link: '/front-end/react/' },
-                    { text: '微信小程序', link: '/front-end/wechat/' },
+                    { text: 'Ts', link: '/front-end/typescript/' },
+                    // { text: '微信小程序', link: '/front-end/wechat/' },
                     { text: 'node', link: '/front-end/node/' },
                     { text: 'nest', link: '/front-end/nest/' },
                     { text: 'react-native', link: '/front-end/react-native/' }
                 ]
             },
-            {
-                text: '数据库',
-                items: [
-                    { text: 'mongoDB', link: '/database/mongoDB/' },
-                    { text: 'redis', link: '/database/redis/' },
-                    { text: 'mysql', link: '/database/mysql/' }
-                ]
-            },
-            { text: '项目', link: '/project/' },
+            // {
+            //     text: '数据库',
+            //     items: [
+            //         { text: 'mongoDB', link: '/database/mongoDB/' },
+            //         { text: 'redis', link: '/database/redis/' },
+            //         { text: 'mysql', link: '/database/mysql/' }
+            //     ]
+            // },
+            // { text: '项目', link: '/project/' },
             { text: 'Go', link: '/go/' },
             {
                 text: '工具',
@@ -37,7 +38,8 @@ module.exports = {
             {
                 text: 'other', link: '/other/'
             },
-            { text: '面试', link: '/interview/' }
+            { text: '面试', link: '/interview/' },
+            { text: 'GitHub', link: 'https://github.com/Forest-211' }
         ],
         sidebar: {
             '/front-end/js/': [
@@ -48,7 +50,6 @@ module.exports = {
             '/front-end/react/': [{ text: '', link: '/front-end/react/' }],
             '/front-end/wechat/': [{ text: '', link: '/front-end/wechat/' }],
             '/front-end/webpack/': [{ text: '', link: '/front-end/webpack/' }],
-            '/front-end/babel/': [{ text: '', link: '/front-end/babel/' }],
             '/front-end/node/': [
                 { text: 'koa基础', link: '/front-end/node/' },
                 {
