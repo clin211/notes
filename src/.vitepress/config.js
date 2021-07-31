@@ -52,6 +52,7 @@ module.exports = {
                 { text: 'TypeScript', link: '/front-end/typescript/' },
                 { text: '环境准备', link: '/front-end/typescript/01-环境准备' },
                 { text: '为什么要学习TS', link: '/front-end/typescript/02-为什么要学习TypeScript' },
+                { text: '类型全解', link: '/front-end/typescript/03-类型全解' },
             ],
             '/front-end/webpack/': [{ text: '', link: '/front-end/webpack/' }],
             '/front-end/node/': [
