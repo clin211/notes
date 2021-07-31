@@ -6,7 +6,7 @@ module.exports = {
         nav: [
             { text: '首页', link: '/' },
             {
-                text: '基础',
+                text: '前端',
                 items: [
                     { text: 'javascript', link: '/front-end/js/' },
                     { text: 'vue', link: '/front-end/vue/' },
