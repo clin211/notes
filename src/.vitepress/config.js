@@ -92,6 +92,7 @@ module.exports = {
                 { text: '函数', link: '/go/05-函数' },
                 { text: '结构体与方法', link: '/go/06-结构体与方法' },
                 { text: '接口', link: '/go/07-接口' },
+                { text: 'Web开发', link: '/go/12-Web开发基础' },
             ],
             '/utils/git/': [
                 { text: 'Git', link: '/utils/git/' },
