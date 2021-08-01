@@ -36,9 +36,9 @@ module.exports = {
                 ]
             },
             {
-                text: 'other', link: '/other/'
+                text: '其他', link: '/other/'
             },
-            { text: '面试', link: '/interview/' },
+            // { text: '面试', link: '/interview/' },
             { text: 'GitHub', link: 'https://github.com/Forest-211' }
         ],
         sidebar: {
@@ -92,7 +92,7 @@ module.exports = {
                 { text: '函数', link: '/go/05-函数' },
                 { text: '结构体与方法', link: '/go/06-结构体与方法' },
                 { text: '接口', link: '/go/07-接口' },
-                { text: 'Web开发', link: '/go/12-Web开发基础' },
+                { text: 'Web开发基础', link: '/go/12-Web开发基础' },
             ],
             '/utils/git/': [
                 { text: 'Git', link: '/utils/git/' },
@@ -109,9 +109,10 @@ module.exports = {
             ],
             '/other/': [
                 { text: '概览', link: '/other/' },
-                { text: '研发准备', link: '/other/01' }
+                { text: '面试', link: '/interview/' }
+                // { text: '研发准备', link: '/other/01' }
             ],
-            '/interview/': [{ text: '面试', link: '/interview/' }]
+            // '/interview/': [{ text: '面试', link: '/interview/' }]
         },
         // lastUpdated: '更新时间',
         // 假定是 GitHub. 同时也可以是一个完整的 GitLab URL
