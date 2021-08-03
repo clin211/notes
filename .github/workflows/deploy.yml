@@ -37,7 +37,7 @@ jobs:
           DEPLOY_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-e -c -r --delete"
           SERVER_PORT: ${{ secrets.SERVER_PORT }}
-          FOLDER: "./src/.vitepress/dist"
+          FOLDER: "./src/.vitepress/dist/"
           SERVER_IP: ${{ secrets.SERVER_IP }}
           USERNAME: ${{ secrets.USERNAME }}
           SERVER_DESTINATION: ${{ secrets.SERVER_DESTINATION }}
