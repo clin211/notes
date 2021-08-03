@@ -1,5 +1,6 @@
 module.exports = {
     title: 'Forest',
+    base: '/docs/',
     description: '笔记记录、阅读',
     serche: true,
     themeConfig: {
@@ -124,6 +125,5 @@ module.exports = {
         // 默认是 false, 设置为 true 来启用
         editLinks: true,
 
-        // base: '/docs/'
     }
 }
