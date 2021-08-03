@@ -124,6 +124,6 @@ module.exports = {
         // 默认是 false, 设置为 true 来启用
         editLinks: true,
 
-        base: '/docs/'
+        // base: '/docs/'
     }
 }
