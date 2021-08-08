@@ -166,6 +166,16 @@ https://github.com/search?o=desc&q=go&s=stars&type=Repositories
 
   从`?`处开始到最后的都是参数，多个参数使用`&`连接。上面网址示例中，参数就是`o=desc&q=go&s=stars&type=Repositories`
 
+### URL
+
+URL(Uniform Resource Locator，统一资源定义符)用于描述一个网络上的资源。URL是URI的一个子集，是URI概念的一种实现方式。通俗的说，URL是internet上描述信息资源的字符串，主要用在各种www客户端程序和服务器端程序中
+
+> URL用一种统一的格式来描述各种信息资源，包括文件、服务器的地址和目录等
+
+### URN
+
+URN(Uniform Resource Name，统一资源名)是带有名字的因特网资源。URN是URL的一种更新形式，URN不依赖位置，并且有可能减少失效链接的个数。但是其流行以待时日，因为它需要更精密软件的支持
+
 ### URI与URL的区别
 
 URI可用来唯一标识一个资源。Web上的所有可用资源，如HTLM、图像、视频、程序等，都是通过一个URI来定位的；
@@ -339,3 +349,300 @@ HTTP 响应状态代码指示特定 [HTTP](https://developer.mozilla.org/zh-cn/H
 #### 响应体
 
 响应体是HTTP请求返回的内容；响应的正文数据都在响应体中。比如：在请求网页时，响应体就是网页的HTML代码；在请求一张图片时，响应体就是图片的二进制数据。我们请求网页后，浏览器要解析的内容就是响应体
+
+## 创建简单的服务器端程序
+
+使用Go语言编程的原因之一无疑是其高性能和开发的高效率。在Go Web开发中主要使用的是`net/http`包
+
+### 创建和解析HTTP服务器端
+
+> 要创建一个Go语言的HTTP服务器端，需首先使用`HandleFunc()`函数注册路由，然后通过`ListenAndServe()`函数开启对客户端的监听
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	// 启动一个http服务
+	server := &http.Server{
+		Addr: "0.0.0.0:8081",
+	}
+
+	// 服务响应
+	http.HandleFunc("/", helloFuture)
+
+	// 监听端口并启动服务
+	server.ListenAndServe()
+}
+
+func helloFuture(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "hello future")
+}
+```
+
+运行当前程序，将终端路径切换到当前程序文件目录下，运行程序，命令：`go run main.go`；然后在终端中访问`http://localhost:8081`，效果图如下：
+
+<img src="./assets/image-20210808105137961.png" alt="image-20210808105137961" style="zoom:50%;" />
+
+### 内部调用逻辑分析
+
+如果要创建一个Web服务器端，则需要：
+
+- 调用`http.HandleFunc()`函数
+
+- 调用`http.ListenAndServe()`函数，此函数有两个参数，当前监听的端口号和实践处理器handler
+
+### 创建客户端请求
+
+在Go语言中创建客户端，最核心的HTTP请求方法就是`NewRequest()`函数
+
+#### 创建GET请求
+
+```go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+func main() {
+	// 启动一个http服务
+	server := &http.Server{
+		Addr: "0.0.0.0:8081",
+	}
+
+	// 服务响应
+	http.HandleFunc("/", handleGet)
+
+	// 监听端口并启动服务
+	server.ListenAndServe()
+}
+
+
+func handleGet(w http.ResponseWriter, r *http.Request) {
+	response, err := http.Get("https://jsonplaceholder.typicode.com/posts/1")
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	closer := response.Body
+	bytes, err := ioutil.ReadAll(closer)
+	fmt.Fprintf(w, string(bytes))
+}
+```
+
+运行程序后，结果如下：
+
+![image-20210808110515633](./assets/image-20210808110515633.png) 
+
+#### 创建POST请求
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+func main() {
+	// 启动一个http服务
+	server := &http.Server{
+		Addr: "0.0.0.0:8081",
+	}
+
+	// 服务响应
+	http.HandleFunc("/post", handlePost)
+
+	// 监听端口并启动服务
+	server.ListenAndServe()
+}
+
+func handlePost(w http.ResponseWriter, r *http.Request) {
+  url := "http://localhost:5000/register"
+	body := `{
+		"nickname": "Forest",
+		"password": "Xdm1234@qq.com",
+		"email": "767425412@qq.com",
+		"avatar": "",
+		"motto": "我不怕失败，即使头破血流我也要奋力向前"
+	}`
+  
+	response, err := http.Post(url, "application/x-www-form-urlencoded", bytes.NewBuffer([]byte(body)))
+	if err != nil {
+		fmt.Println("err:", err)
+	}
+  
+	b, err := ioutil.ReadAll(response.Body)
+  if err != nil {
+		fmt.Println("err:", err)
+	}
+  
+	fmt.Fprintf(w, string(b))
+}
+```
+
+#### 创建PUT请求
+
+PUT方法在Go语言中没有给单独封装，只能直接调用`http.NewRequest()`函数来实现
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+)
+
+func main() {
+	// 启动一个http服务
+	server := &http.Server{
+		Addr: "0.0.0.0:8081",
+	}
+
+	// 服务响应
+	http.HandleFunc("/put", handlePut)
+
+	// 监听端口并启动服务
+	server.ListenAndServe()
+}
+
+func handlePut(w http.ResponseWriter, r *http.Request) {
+	url := "http://localhost:500/update"
+	payload := strings.NewReader(`{
+		"userId": 1,
+		"nickname": "Forest",
+		"email": "767425412lin@gmail.com",
+	}`)
+
+	requset, _ := http.NewRequest("PUT", url, payload)
+	requset.Header.Add("Content-Type", "application/json")
+	response, _ := http.DefaultClient.Do(requset)
+
+	defer response.Body.Close()
+	body, _ := ioutil.ReadAll(response.Body)
+
+	fmt.Println("body:", body)
+}
+```
+
+#### 创建DELETE请求
+
+DELETE方法也一样，没有单独被封装，也只能调用`http.NewRequest()`函数来创建
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+)
+
+func main() {
+	// 启动一个http服务
+	server := &http.Server{
+		Addr: "0.0.0.0:8081",
+	}
+
+	// 服务响应
+	http.HandleFunc("/", handleGet)
+	http.HandleFunc("/post", handlePost)
+	http.HandleFunc("/put", handlePut)
+	http.HandleFunc("/delete", handleDelete)
+
+	// 监听端口并启动服务
+	server.ListenAndServe()
+}
+
+
+func handleDelete(w http.ResponseWriter, r *http.Request){
+	url := "http://www.shirdon.com/comment/update"
+	payload := strings.NewReader(`{
+		"userId": 1,
+	}`)
+
+	requset, _ := http.NewRequest("DELETE", url, payload)
+	requset.Header.Add("Content-Type", "application/json")
+	response, _ := http.DefaultClient.Do(requset)
+
+	defer response.Body.Close()
+	body, _ := ioutil.ReadAll(response.Body)
+
+	fmt.Println("body:", body)
+	fmt.Fprintf(w, `{success: ok}`)
+}
+```
+
+## 模版引擎
+
+Go语言中通用的模版引擎库`text/template`用于处理任意格式的文本。另外，Go语言还单独提供了`html/template`包，用于生成可对抗代码注入的安全HTML文档
+
+### 模板原理
+
+#### 模板和模板引擎
+
+在给予MVC模型的Web架构中，我们常将不变的部分提出来成为模版，而那些可变部分有后端程序提供数据，借助模版引擎渲染来生成动态网页
+
+模板可以被理解为事先定义好的HTML文档。模板渲染可以被简单理解为文本替换操作——是后端用相应的数据去替换HTML文档中实现准备好的标记
+
+模板的诞生是为了将显示于数据分离（即前后端分离）；模板技术多种多样，但本质是将模板文件和数据通过模板引擎生成最终的HTML文档。模版引擎有很多，比如：Node.js的[ejs](https://link.zhihu.com/?target=https%3A//ejs.bootcss.com/)、[nunjucks](https://link.zhihu.com/?target=https%3A//nunjucks.bootcss.com/)等等
+
+#### Go语言的模板引擎
+
+Go语言内置了文本模板引擎`text/template`包，以及用于生成HTML文档的`html/template`包，它们的使用基本类似，大致总结为以下几点：
+
+- 模板文件的后缀通常是`.tmpl`和`.tpl`(也可以使用其他的后缀)，必须使用`UTF-8`编码
+- 模板文件中使用`{{}}`来包裹和表示需要传入的数据
+- 传给模板的数据可以通过点号`.`来访问。如果是符合类型的数据，则可以通过`{{.FieldName}}`来访问它的字段
+- 出`{{}}`包裹外，其他的内容均不做任何处理，原样输出
+
+Go语言模版引擎的使用分为：**定义模板文件**、**解析模板文件和渲染文件**
+
+1. 定义模板文件
+
+   定义模板文件是指按照相应的语法规则去定义模板文件
+
+2. 解析模板文件
+
+   `html/template`包提供了以下方法来解析模板文件、获取模板对象；可以通过`New()`函数来创建模板对象，并为其挺假一个模板名称。`New()`函数的定义如下：
+
+   ```go
+   func New(name string) *Template
+   ```
+
+   可以使用`Parse()`函数来创建模板对象并完成解析模版内容。`Parse()`定义方法如下：
+
+   ```go
+   func (t *Template) Parse(src string) (*Template, err)
+   ```
+
+   如果要解析模板文件，则可以使用`ParseFile()`函数，该函数会返回模板对象。该函数定义如下：
+
+   ```go
+   func ParseFiles(filenames ...string) (*Template, error)
+   ```
+
+   如果要批量解析文件，则可以使用`ParseGlob()`函数。该函数的定义如下：
+
+   ```go
+   func ParseGlob(pattern string) (*Template, error)
+   ```
+
+   可以使用`ParseGlob()`函数来进行正则匹配，比如在当前解析目录下有以`a`开头的模板文件，则使用`template.ParseGlob("a*")`
+
+3. 渲染模板文件
+
+   

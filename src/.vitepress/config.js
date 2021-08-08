@@ -55,6 +55,7 @@ module.exports = {
                 { text: '为什么要学习TS', link: '/front-end/typescript/02-为什么要学习TypeScript' },
                 { text: '类型全解', link: '/front-end/typescript/03-类型全解' },
                 { text: '函数', link: '/front-end/typescript/04-函数' },
+                { text: '类', link: '/front-end/typescript/04-类' },
             ],
             '/front-end/webpack/': [{ text: '', link: '/front-end/webpack/' }],
             '/front-end/node/': [
