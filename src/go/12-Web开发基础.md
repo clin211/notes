@@ -521,7 +521,7 @@ func handlePut(w http.ResponseWriter, r *http.Request) {
 	url := "http://localhost:500/update"
 	payload := strings.NewReader(`{
 		"userId": 1,
-		"nickname": "Forest",
+		"nickname": "clin",
 		"email": "767425412lin@gmail.com",
 	}`)
 
@@ -558,9 +558,6 @@ func main() {
 	}
 
 	// 服务响应
-	http.HandleFunc("/", handleGet)
-	http.HandleFunc("/post", handlePost)
-	http.HandleFunc("/put", handlePut)
 	http.HandleFunc("/delete", handleDelete)
 
 	// 监听端口并启动服务
@@ -645,4 +642,199 @@ Go语言模版引擎的使用分为：**定义模板文件**、**解析模板文
 
 3. 渲染模板文件
 
+   `html/template`包提供了`Execute()`和`ExecteTemplate()`方法来渲染模板
+
+   ```go
+   func (t *template) Execute(wr Writer, data interface{}) error {}
    
+   func (t *template) ExecuteTemplate(wr io.Writer, name string, data interface{}) error {}
+   ```
+
+   在创建`New()`函数时就为模板对象添加了一个模板名称，执行`Execute()方法后会默认去寻找该名称进行数据融合
+
+   使用`ParseFile()`函数可以一次加载多个模板，此时不可以使用`Execute()`来执行数据融合，可以通过`ExecuteTemplate()`方法指定模板名称来执行数据融合
+
+### 使用html/template包
+
+#### 创建模板
+
+在Go语言中，可以通过将模板应用于一个数据结构（即把该数据结构作为模板的参数）来执行并输出HTML文档
+
+模板在执行时会遍历数据结构，并将指针指向运行中的数据结构中的`.`的当前位置
+
+用作模板的输入文本必须是UTF-8编码的文本；Action是数据运算和控制单位，Action有`{{`和`}}`界定；在Action之外的所有文本都不做修改的复制到输出中。Action内部不能有换行，但注释可以有换行
+
+接下来就创建并实践模板吧
+
+- 新建一个项目example，然后在example中分别创建examp/template/index.tmpl和main.go
+
+- 创建模板文件
+
+  ```shell
+  // example/template/index.tmpl
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>模板</title>
+  </head>
+  <body>
+      <p>加油，少年！{{.}}</p>
+  </body>
+  </html>
+  ```
+
+- 创建用于创建和渲染模板的文件(main.go)
+
+  ```go
+  package main
+  
+  import (
+  	"fmt"
+  	"html/template"
+  	"net/http"
+  )
+  
+  func helloHandleFunc(w http.ResponseWriter, r *http.Request) {
+  
+  	// 解析模板
+  	tpl, err := template.ParseFiles("./template/index.tmpl")
+  	if err != nil {
+  		fmt.Println("template parsefile failed, err:", err)
+  		return
+  	}
+  
+  	// 渲染模版
+  	name := "learn Go"
+  	tpl.Execute(w, name)
+  }
+  func main() {
+  	http.HandleFunc("/", helloHandleFunc)
+  	http.ListenAndServe(":8082", nil)
+  }
+  ```
+
+- 在命令行终端输入启动命令(注意，一定是在文件所在路径下)
+
+  ```shell
+  go run main.go
+  ```
+
+- 在浏览器中访问`http://localhost:8082/`，最终效果图如下所示：
+
+  <img src="./assets/image-20210809065158135.png" alt="image-20210809065158135" style="zoom:50%;" />
+
+#### Go语言模板语法
+
+模板语法都包含在`{{`和`}}`中间，其中`.`表示当前对象，在传入一个结构体对象时，可以根据`.`来访问结构体的对应字段，例如来写一个个人信息的模板渲染：
+
+```go
+// example/template/user.tpml
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模板</title>
+  </head>
+  <body>
+    <table border="1">
+      <thead>
+          <th rowspan="2">个人信息</th>
+      </thead>
+      <tr>
+        <td>nickname</td>
+        <td>{{.Nickname}}</td>
+      </tr>
+      <tr>
+        <td>age</td>
+        <td>{{.Age}}</td>
+      </tr>
+      <tr>
+        <td>gender</td>
+        <td>{{.Gender}}</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>{{.Email}}</td>
+      </tr>
+    </table>
+  </body>
+</html>
+```
+
+完善解析模板的文件及数据
+
+```go
+// example/main.go
+type User struct {
+	Nickname string
+	Gender string
+	Age int
+	Email string
+}
+
+func handleSayHi(w http.ResponseWriter, r *http.Request){
+	// 解析模板
+	tpl, err := template.ParseFiles("./template/user.tmpl")
+	if err != nil {
+		fmt.Println("create template failed, err:", err)
+		return
+	}
+
+	// 利用给定数据渲染模版，并将结果写入w
+	user := User{
+		Nickname: "Forest",
+		Gender: "man",
+		Age: 22,
+		Email: "767425412@qq.com",
+	}
+	tpl.Execute(w, user)
+}
+```
+
+重新运行命令启动程序，然后在浏览器中访问：`http://localhost:8082/say-hi`，效果图如下：
+
+<img src="./assets/image-20210809071300780.png" alt="image-20210809071300780" style="zoom:50%;" />
+
+> 在传入的变量时map时，也可以在模板文件中通过`.`来访问值
+
+#### **常用模板语法**
+
+- 注释
+
+  在Go语言中，HTML模板的注释结构如下：
+
+  ```go
+  {{/* 这是一个注释，不会被解析 */}}
+  ```
+
+- 管道(pipeline)
+
+  管道是指产生数据的操作；比如：`{{.}}`、`{{.Nickname}}`等，Go的模板语法中支持用管道符`|`来链接多个命令，用法和UNIX下的管道类似：`|`前面的命令会将晕眩结果(或返回值)传递给后一个命令的最后一个位置
+
+  ::: tip 注意
+
+  并不是只有使用`|`才是管道，在Go的模板语法中，pipeline的概念时传递数据，只要能产生数据的结构，都是pipeline
+
+  :::
+
+- 变量
+
+- 条件判断
+
+- renge关键字
+
+- with关键字
+
+- 比较函数
+
+- 预定义函数
+
+- 自定义函数
+
+- 使用嵌套模板
+
