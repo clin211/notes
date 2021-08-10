@@ -824,17 +824,143 @@ func handleSayHi(w http.ResponseWriter, r *http.Request){
 
 - 变量
 
+  在Action里可以初始化一个变量来捕获管道的执行结果。初始化语法如下：
+
+  ```go
+  $variable := pipline
+  ```
+
+  其中`$variable`是变量的名字。声明变量的Action不会产生任何输出
+
 - 条件判断
+
+  Go模板语法中的条件判断有一下几种：
+
+  ```
+  {{if pipline}} T1 {{end}}
+  {{if pipline}} T1 {{else}} T0 {{end}}
+  {{if pipline}} T1 {{else if pipline}} T0 {{end}}
+  ```
+  
+  
 
 - renge关键字
 
+  在Go的模板语法中，使用`range`关键字进行遍历，其中`pipline`的值必须是数组、切片、map或者channel。其语法以`{{range pipline}}`开头，以`{{end}}`结尾，形式如下：
+
+  ```go
+  {{range pipline}} T1 {{end}}
+  ```
+
+  如果`pipline`的值值其长度为0，则不会有任何输出。中间也可以有`{{else}}`，如下：
+
+  ```go
+  {{range pipline}} T1 {{else}} T0 {{end}}
+  ```
+
+  如果`pipline`的值其长度为0则会执行T0
+
+  示例如下：
+
+  ```go
+  package main
+  
+  import (
+  	"html/template"
+  	"log"
+  	"net/http"
+  )
+  
+  func handleRange(w http.ResponseWriter, r *http.Request) {
+  	rangeTemplate := `<p>{{if .Kind}}</p>
+  	<p>{{range $i, $v := .MapContent}}</p>
+  	<p>{{$i}} => {{$v}},{{$.OutsideContent}}</p>
+  	<p>{{end}}</p>
+  	<p>{{else}}</p>
+  	<p>{{range .MapContent}}</p>
+  	<p>{{.}}, {{$.OutsideContent}}</p>
+  	<p>{{end}}</p>
+  	<p>{{end}}</p>`
+  
+  	str1 := []string{"first range", "use index and value"}
+  	str2 := []string{"second range", "not use index and value"}
+  
+  	type Content struct {
+  		MapContent     []string
+  		OutsideContent string
+  		Kind           bool
+  	}
+  
+  	var content = []Content{
+  		{str1, "第一次外面的内容", true},
+  		{str2, "第二次外面的内容", false},
+  	}
+  
+  	// 创建模板并将字符解析进去
+  	t := template.Must(template.New("range").Parse(rangeTemplate))
+  	fmt.Println("t:", t)
+  	for _, c := range content {
+  		err := t.Execute(w, c)
+  		if err != nil {
+  			log.Println("executing template:", err)
+  		}
+  	}
+  }
+  
+  func main() {
+  	http.HandleFunc("/range", handleRange)
+  	http.ListenAndServe(":8082", nil)
+  }
+  ```
+
+  重新运行程序后，访问浏览器效果图如下：
+
+  <img src="./assets/image-20210811072640545.png" alt="image-20210811072640545" style="zoom:50%;" />
+
 - with关键字
+
+  在Go的模板语法中，`with`关键字和`if`关键字有点类似，`{{with}}`操作尽在传递的管道部位空时有条件地执行其主体。如下：
+
+  ```go
+  {{with pipline}} T1 {end}
+  ```
+
+  如果`pipline`为空，则不产生输出。中间也可以`{{else}}`；例如：
+
+  ```go
+  {{with pipline}} T1 {{else}} T0 {{end}}
+  ```
+
+  如果`pipline`为空，则不改变`.`并执行T0；否则将`.`设为`pipline`的值并执行T1
 
 - 比较函数
 
+  布尔函数会将任何类型的零值是为假，将其余视为真。例如下面常用的二元比较运算符：
+
+  | 运算符 | 说明                             |
+  | ------ | -------------------------------- |
+  | eq     | 相等判断；例如：arg1 == arg2     |
+  | ne     | 不相等判断；例如：arg1 != arg2   |
+  | lt     | 小于判断；例如：arg1 < arg2      |
+  | le     | 小于等于判断；例如：arg1 <= arg2 |
+  | gt     | 大于判断；例如：arg1 > arg2      |
+  | ge     | 大于等于判断；例如：arg1 >= arg2 |
+
+  为简化多参数相等检测，`eq`可以接受2个或者多个参数，它将第一个参数和其余参数依次比较，如下：
+
+  ```go
+  {{eq arg1 arg2 arg3 ... argn}}
+  ```
+
+  即只能做如下比较
+
+  ```go
+  arg1 ==arg2 || arg1 == arg2 || ... || arg1 == argn
+  ```
+
+  比较函数只适用基本类型（或在重定义的基本类型，如"type Balance float32"）。但整数和浮点数不能互相比较
+
 - 预定义函数
-
 - 自定义函数
-
 - 使用嵌套模板
-
+  
