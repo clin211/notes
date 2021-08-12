@@ -983,4 +983,20 @@ func handleSayHi(w http.ResponseWriter, r *http.Request){
 
 - 自定义函数
 
+  Go语言的模板支持自定义函数。自定义函数通过调用`Funcs()`方法实现，其定义如下：
+
+  ```go
+  func (t *Template) Funcs(funcMap FuncMap) *Template
+  ```
+
+  `Funcs()`方法向模板对象的函数字典里加入参数`funcMap`内的键值对。如果`funcMap`的某个键值对的值不是函数类型，或者返回值不符合要求，则会报`panic`错误，但可以对模板对象的函数列表的成员进行重写。方法返回模板对象以便进行链式调用。`FuncMap`的定义如下：
+
+  ```go
+  type FuncMap map[string]interface{}
+  ```
+
+  `FuncMap`类型定义了函数名字符串到函数的映射，每个函数都必须有1个或者2个返回值。如果有两个返回值，则后一个必须是`error`接口类型；如果有2个返回值的方法返回`error`非`nil`，则模板执行会中断并返回该错误给调用者
+
+  在执行模板时，函数从两个函数字典中查找：首先是模板函数字典，然后是全局函数字典。一般不在模版内定义函数，而是使用`Funcs()`方法添加函数到模板里。
+
 - 使用嵌套模板
