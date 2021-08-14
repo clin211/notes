@@ -842,11 +842,10 @@ func handleSayHi(w http.ResponseWriter, r *http.Request){
   {{if pipline}} T1 {{else if pipline}} T0 {{end}}
   ```
   
-  
 
 - renge关键字
 
-  在Go的模板语法中，使用`range`关键字进行遍历，其中`pipline`的值必须是数组、切片、map或者channel。其语法以`{{range pipline}}`开头，以`{{end}}`结尾，形式如下：
+  在Go的模板语法中，使用`range`关键字进行遍历，其中pipline的值必须是数组、切片、map或者channel。其语法以`{{range pipline}}`开头，以`{{end}}`结尾，形式如下：
 
   ```go
   {{range pipline}} T1 {{end}}
