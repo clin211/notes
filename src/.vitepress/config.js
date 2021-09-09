@@ -75,6 +75,7 @@ module.exports = {
             '/front-end/nest/': [
                 { text: '概述', link: '/front-end/nest/' },
                 { text: '基本介绍', link: '/front-end/nest/01' },
+                { text: '核心知识', link: '/front-end/nest/02' },
             ],
             '/project/': [{ text: '', link: '/' }],
             '/database/mongoDB/': [
