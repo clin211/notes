@@ -836,16 +836,14 @@ func handleSayHi(w http.ResponseWriter, r *http.Request){
 
   Go模板语法中的条件判断有一下几种：
 
-  ```
+  ```go
   {{if pipline}} T1 {{end}}
   {{if pipline}} T1 {{else}} T0 {{end}}
   {{if pipline}} T1 {{else if pipline}} T0 {{end}}
   ```
   
-
 - renge关键字
-
-  在Go的模板语法中，使用`range`关键字进行遍历，其中pipline的值必须是数组、切片、map或者channel。其语法以`{{range pipline}}`开头，以`{{end}}`结尾，形式如下：
+在Go的模板语法中，使用 `range` 关键字进行遍历，其中pipline的值必须是数组、切片、map或者channel。其语法以 `{{range pipline}}` 开头，以`{{end}}`结尾，形式如下：
 
   ```go
   {{range pipline}} T1 {{end}}
@@ -963,20 +961,20 @@ func handleSayHi(w http.ResponseWriter, r *http.Request){
 
   预定义函数是模板库中定义好的函数，可以直接在`{{}}`中使用，预定义函数名及其功能见下表：
 
-  | 函数名   | 说明                                                         |
-  | -------- | ------------------------------------------------------------ |
-  | and      | 函数返回其第1个空参数或者最后一个参数，即：`"and x y"`等价于`"if x then y else x"`。所有参数都会执行 |
-  | or       | 返回第一个非空参数或者最后一个参数，即`"or x y"`等价于`"if x then x else y"`。所有参数都会执行 |
-  | not      | 返回其单个参数的布尔值“不是”                                 |
-  | len      | 返回其参数的整数类型长度                                     |
+  | 函数名   | 说明                                                                                                                 |
+  | -------- | -------------------------------------------------------------------------------------------------------------------- |
+  | and      | 函数返回其第1个空参数或者最后一个参数，即：`"and x y"`等价于`"if x then y else x"`。所有参数都会执行                 |
+  | or       | 返回第一个非空参数或者最后一个参数，即`"or x y"`等价于`"if x then x else y"`。所有参数都会执行                       |
+  | not      | 返回其单个参数的布尔值“不是”                                                                                         |
+  | len      | 返回其参数的整数类型长度                                                                                             |
   | index    | 执行结果为`index()`函数后第一个参数以第一个参数后面剩下的参数为索引指向的位置。每个被索引的主体必须是数组、切片、map |
-  | print    | 即`fmt.Sprint`                                               |
-  | printf   | 即`fmt.Sprintf`                                              |
-  | println  | 即`fmt.Sprintln`                                             |
-  | html     | 返回其参数文本表示的HTML逸码等价表示                         |
-  | urlquery | 返回其参数文本表示的可嵌入URL查询的逸码等价表示              |
-  | js       | 返回其参数文本表示的JavaScript译码等价表示                   |
-  | call     | 执行结果是调用第一个参数的返回值，该参数必须是函数类型，其余参数作为调用该函数的参数 |
+  | print    | 即`fmt.Sprint`                                                                                                       |
+  | printf   | 即`fmt.Sprintf`                                                                                                      |
+  | println  | 即`fmt.Sprintln`                                                                                                     |
+  | html     | 返回其参数文本表示的HTML逸码等价表示                                                                                 |
+  | urlquery | 返回其参数文本表示的可嵌入URL查询的逸码等价表示                                                                      |
+  | js       | 返回其参数文本表示的JavaScript译码等价表示                                                                           |
+  | call     | 执行结果是调用第一个参数的返回值，该参数必须是函数类型，其余参数作为调用该函数的参数                                 |
 
   
 
