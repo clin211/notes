@@ -4,7 +4,7 @@ name: Deploy GitHub Pages and remote server
 on:
   push:
     branches:
-        - main
+      - main
 
 # 任务
 jobs:
@@ -20,7 +20,7 @@ jobs:
 
       # 1、生成静态文件
       - name: Build
-        run: npm install && npm run build
+        run: yarn && yarn build
 
       # 2、部署到 GitHub Pages
       - name: Deploy
