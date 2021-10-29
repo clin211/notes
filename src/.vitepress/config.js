@@ -19,14 +19,14 @@ module.exports = {
                     { text: 'react-native', link: '/front-end/react-native/' }
                 ]
             },
-            // {
-            //     text: '数据库',
-            //     items: [
-            //         { text: 'mongoDB', link: '/database/mongoDB/' },
-            //         { text: 'redis', link: '/database/redis/' },
-            //         { text: 'mysql', link: '/database/mysql/' }
-            //     ]
-            // },
+            {
+                text: '数据库',
+                items: [
+                    { text: 'mongoDB', link: '/database/mongoDB/' },
+                    { text: 'redis', link: '/database/redis/' },
+                    { text: 'mysql', link: '/database/mysql/' }
+                ]
+            },
             // { text: '项目', link: '/project/' },
             { text: 'Go', link: '/go/' },
             {
