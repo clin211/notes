@@ -19,14 +19,14 @@ module.exports = {
                     { text: 'react-native', link: '/front-end/react-native/' }
                 ]
             },
-            {
-                text: '数据库',
-                items: [
-                    { text: 'mongoDB', link: '/database/mongoDB/' },
-                    { text: 'redis', link: '/database/redis/' },
-                    { text: 'mysql', link: '/database/mysql/' }
-                ]
-            },
+            // {
+            //     text: '数据库',
+            //     items: [
+            //         { text: 'mongoDB', link: '/database/mongoDB/' },
+            //         { text: 'redis', link: '/database/redis/' },
+            //         { text: 'mysql', link: '/database/mysql/' }
+            //     ]
+            // },
             // { text: '项目', link: '/project/' },
             { text: 'Go', link: '/go/' },
             {
@@ -78,13 +78,13 @@ module.exports = {
                 { text: '核心知识', link: '/front-end/nest/02' },
             ],
             '/project/': [{ text: '', link: '/' }],
-            '/database/mongoDB/': [
-                { text: '', link: '/' },
-                {
-                    text: '认识MongoDB',
-                    link: '/database/mongodb/01-MongoDB'
-                }
-            ],
+            // '/database/mongoDB/': [
+            //     { text: '', link: '/' },
+            //     {
+            //         text: '认识MongoDB',
+            //         link: '/database/mongodb/01-MongoDB'
+            //     }
+            // ],
             '/database/redis/': [{ text: '', link: '/' }],
             '/database/mysql/': [{ text: '', link: '/' }],
             '/go/': [
