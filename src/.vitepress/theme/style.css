@@ -89,3 +89,31 @@
   --docsearch-primary-color: var(--vp-c-brand) !important;
 }
 
+.DocSearch-Button {
+  height: 36px;
+  border-radius: 18px;
+}
+
+.has-sidebar .title {
+  backface-visibility: hidden;
+}
+.VPNavBarSearch {
+  justify-content: flex-end;
+  padding-inline-end: 20px;
+}
+
+#local-search {
+  height: 36px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.VPMenuLink {
+  margin-top: 0.5em;
+}
+
+.VPMenuLink .link {
+  margin-inline-start: 1em;
+}
