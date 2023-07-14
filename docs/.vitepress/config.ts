@@ -5,8 +5,11 @@ export default defineConfig({
     title: 'Forest notes',
     description: '学习笔记、技术分享、深入思考',
     lastUpdated: true,
+    base: '/',
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
+        outline: 3,
+        returnToTopLabel: 'Top up',
         siteTitle: false,
         search: {
             provider: 'local',
@@ -48,13 +51,20 @@ export default defineConfig({
                 items: [
                     {
                         text: 'Go',
-                        items: [{ text: 'gin', link: '/backend/go/gin/' }],
+                        items: [
+                            { text: 'gin', link: '/backend/go/gin/' },
+                            { text: 'echo', link: '/backend/go/gin/' },
+                        ],
                     },
                     {
                         text: 'Node.js',
                         items: [
                             {
-                                text: 'Nest.js',
+                                text: 'Nest',
+                                link: '/backend/nodejs/nestjs/',
+                            },
+                            {
+                                text: 'Koa',
                                 link: '/backend/nodejs/nestjs/',
                             },
                         ],
@@ -66,7 +76,6 @@ export default defineConfig({
                 link: '/algorithms/',
             },
         ],
-        outline: 3,
         sidebar: {
             '/algorithms/': [
                 {
@@ -100,7 +109,7 @@ export default defineConfig({
         ],
         footer: {
             message: 'Released under the MIT License.',
-            copyright: 'Copyright © 2019-present Forest-211',
+            copyright: 'Copyright ©2021-present Forest-211',
         },
     },
 });

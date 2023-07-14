@@ -93,6 +93,12 @@
   height: 36px;
   border-radius: 18px;
 }
+.shell {
+  border-radius: 8px !important;
+}
+.search-bar {
+  border-radius: 30px !important;
+}
 
 .has-sidebar .title {
   backface-visibility: hidden;
